@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="internal_transfer_report_temp">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                    <div class="row">
+                    <center>
+                        <b>
+                            <h4>Laporan Transfer Internal</h4>
+                        </b>
+                    </center>
+                    <center>
+                        <b>
+                            <span t-esc="start_date"/>
+                            To
+                            <span t-esc="end_date"/>
+                        </b>
+                    </center>
+                </div>
+                <br/>
+                <t t-set="total_qty" t-value="0"/>
+
+                <t t-foreach="data" t-as="transfer">
+                    <table class="table table-condensed table-striped">
+                        <thead >
+                            <tr>
+                                <th colspan="2">No Transaksi</th>
+                                <th>Tanggal</th>
+                                <th>Lokasi Awal</th>
+                                <th>Lokasi Tujuan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <span t-esc="transfer[0]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="transfer[1]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="transfer[2]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="transfer[3]"/>/Stock
+                                </td>
+                            </tr>
+                            <tr><td colspan="5"></td></tr>
+                            <tr>
+                                <td><b>Kd. Produk</b></td>
+                                <td><b>Nama Produk</b></td>
+                                <td><b>Keterangan</b></td>
+                                <td><b>Satuan</b></td>
+                                <td class="text-right"><b>Jumlah</b></td>
+                            </tr>
+                            <t t-foreach="transfer[4]" t-as="transfer_detail">
+                                <tr>
+                                    <td>
+                                        <span t-esc="transfer_detail[0]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="transfer_detail[1]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="transfer_detail[2]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="transfer_detail[3]"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="transfer_detail[4]"/>
+                                        <t t-set="total_qty" t-value="total_qty + transfer_detail[4]"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+
+                <div class="row">
+                    <div class="col-xs-4 pull-right">
+                        <table class="table table-condensed">
+                            <tr>
+                                <td><strong>Jumlah</strong></td>
+                                <td class="text-right">
+                                    <span t-esc="total_qty"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

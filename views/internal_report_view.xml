@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="internal_transfer_report_form_view" model="ir.ui.view">
+            <field name="name">stock.picking.report.form.view</field>
+            <field name="model">stock.picking.report</field>
+            <field name="arch" type="xml">
+                <form string="Laporan Transfer Internal">
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="print_internal_transfer_report" string="Print Report" class="oe_highlight"
+                                type="object"/>
+                        Or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+
+        <record id="action_internal_transfer_report_wizard" model="ir.actions.act_window">
+            <field name="name">Laporan Transfer Internal</field>
+            <field name="res_model">stock.picking.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_internal_transfer_report_wizard"
+                  name="Laporan Transfer Internal"
+                  action="action_internal_transfer_report_wizard"
+                  parent="stock.menu_warehouse_report"
+                  sequence="1"/>
+    </data>
+</odoo>

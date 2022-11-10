@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_internal_transfer_report"
+                string="Laporan Transfer Internal"
+                model="stock.picking.report"
+                report_type="qweb-pdf"
+                file="internal_transfer_report.internal_transfer_report_temp"
+                name="internal_transfer_report.internal_transfer_report_temp"
+        />
+    </data>
+</odoo>

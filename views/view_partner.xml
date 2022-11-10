@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_config_member" model="ir.ui.view">
+        <field name="name">res.partner.config.member</field>
+        <field name="model">res.partner</field>
+        <field name="priority">10</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <page name="sales_purchases" position="after">
+                <page string="Member" name="member">
+                    <group name="config">
+                        <field name="config_member" string="Member" />
+                        <field name="member_status" />
+                    </group>
+                </page>
+            </page>
+        </field>
+    </record>
+
+</odoo>

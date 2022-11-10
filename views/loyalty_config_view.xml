@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- loyalty level config -->
+        <record id="view_loyalty_level_form" model="ir.ui.view">
+            <field name="name">loyalty.level.configuration.form.view</field>
+            <field name="model">loyalty.level.configuration</field>
+            <field name="arch" type="xml">
+                <form string="Setting Loyalty Level">
+                    <sheet>
+                        <div class="oe_title">
+                            <field name="ref"/>
+                        </div>
+                        <group>
+                            <group string="Information">
+                                <field name="name"/>                        
+                                <field name="type"/>                        
+                                <field name="minimum_purchase"/>
+                                <field name="amount_multiple" 
+                                    attrs="{'invisible': [('type', '!=', 'fix_multiple')], 'required': [('type', '=', 'fix_multiple')]}"/>
+                                <field name="point_calculation_percentage" 
+                                    attrs="{'invisible': [('type', '!=', 'percentage')], 'required': [('type', '=', 'percentage')]}"/>
+                                <field name="point_calculation_fix" 
+                                    attrs="{'invisible': [('type', '!=', 'fix')], 'required': [('type', '=', 'fix')]}"/>
+                                <field name="point_calculation_fix_multiple" 
+                                    attrs="{'invisible': [('type', '!=', 'fix_multiple')], 'required': [('type', '=', 'fix_multiple')]}"/>
+                                <field name="expired_day"/>
+                            </group>
+                            <group string="Formula">
+                                <field name="points"/>
+                                <field name="to_amount"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="loyalty_point_redeem_tree_view" model="ir.ui.view">
+            <field name="name">loyalty.level.configuration.tree.view</field>
+            <field name="model">loyalty.level.configuration</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                    <field name="minimum_purchase"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_loyalty_level_configuration" model="ir.actions.act_window">
+            <field name="name">Configure Loyalty Level</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">loyalty.level.configuration</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <!-- menu -->
+		<menuitem id="menu_point_config_loyalty" 
+                  name="Loyalty" 
+                  parent="sales_team.menu_sale_config" 
+                  groups="sales_team.group_sale_manager"
+        />
+
+        <menuitem id="menu_loyalty_level_configuration" 
+                  name="Level" 
+                  parent="menu_point_config_loyalty" 
+                  action="action_loyalty_level_configuration" 
+                  groups="sales_team.group_sale_manager"
+        />
+
+</odoo>

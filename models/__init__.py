@@ -1,0 +1,7 @@
+import account_payment
+import loyalty
+import point_of_sale
+import res_company
+import report_loyalty_point
+import res_partner
+import sale_order

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="form_redeem_inherit_view_account_payment_invoice_form" model="ir.ui.view">
+            <field name="name">account.payment.invoice.form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_invoice_form" />
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//sheet//group[1]" position="inside">
+                    <field name="redeem_status" attrs="{'invisible': True}" />
+                    <group attrs="{'invisible': [('redeem_status', '=', False)]}">
+                        <label for="redeem_point"/>
+                        <div>
+                            <field name="redeem_point"/>
+                        </div>
+                        <label for="redeem_amount"/>
+                        <div>
+                            <field name="redeem_amount"/>
+                        </div>
+                        <label for="total_points"/>
+                        <div>
+                            <field name="total_points"/>
+                        </div>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+</odoo>

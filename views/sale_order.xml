@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="form_loyalty_inherit_sale_view_order_form" model="ir.ui.view">
+        <field name="name">form_loyalty_inherit_sale_view_order_form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/group/group[last()]" position="inside">
+                <field name="available_redeem_point" attrs="{'invisible': True}" />
+                <field name="available_loyalty_point" attrs="{'invisible': True}" />
+                <field name="redeem_status" attrs="{'invisible': [('available_redeem_point', '=', False)]}" />
+                <field name="is_get_loyalty_point" attrs="{'invisible': [('available_loyalty_point', '=', False)]}" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
+

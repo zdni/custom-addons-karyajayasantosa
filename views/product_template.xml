@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="product_template_form_view_inherit_schedule_pricelist" model="ir.ui.view">
+            <field name="name">product.template.view.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='uom_id']" position="before">
+                    <label for="standard_price_pricelist" groups="base.group_user"/>
+                    <div name="standard_price_pricelist_uom" groups="base.group_user">
+                        <field name="standard_price_pricelist" widget='monetary' options="{'currency_field': 'currency_id'}" class="oe_inline"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+</odoo>

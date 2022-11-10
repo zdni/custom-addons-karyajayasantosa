@@ -1,0 +1,4 @@
+import product_template
+import purchase
+import sale
+import schedule_pricelist_product

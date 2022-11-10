@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_due_date_customer" model="ir.ui.view">
+        <field name="name">res.partner.view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="partner_financial_risk.res_partner_view_risk" />
+        <field name="priority" eval="18"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='financial_risk']//field[@name='credit_policy']" position="after">
+                <field name="due_date_customer" string="Due date for Invoice" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="wizard_report_brand_sales" model="ir.ui.view">
+            <field name="name">report.brand.sales.form.view</field>
+            <field name="model">report.brand.sales</field>
+            <field name="arch" type="xml">
+                <form string="Laporan Penjualan Merk">
+
+                    <group>
+                        <group>
+                            <field name="start_date" attr="{'required': True}"/>
+                        </group>
+                        <group>
+                            <field name="end_date" attr="{'required': True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="brand_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}"/>
+                    </group>
+
+                    <footer>
+                        <button name="print_report" string="Print Report" class="oe_highlight" type="object"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+
+        <record id="action_report_brand_sales" model="ir.actions.act_window">
+            <field name="name">Laporan Penjualan Merk</field>
+            <field name="res_model">report.brand.sales</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_wizard_report_brand_sales"
+                  name="Laporan Penjualan Merk"
+                  action="action_report_brand_sales"
+                  parent="account.menu_finance_legal_statement"
+                  sequence="2"/>
+    </data>
+</odoo>
+

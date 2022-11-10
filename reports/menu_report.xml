@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_brand_sales"
+                string="Report Brand Sales"
+                model="report.brand.sales"
+                report_type="qweb-pdf"
+                file="report_brand_sales.report_temp"
+                name="report_brand_sales.report_temp"
+        />
+    </data>
+</odoo>

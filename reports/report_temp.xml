@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_temp">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure">
+                    <div class="row">
+                        <center>
+                            <b>
+                                <h4>Laporan Penjualan Merk</h4>
+                            </b>
+                        </center>
+                        <center>
+                            <b>
+                                Tanggal Penarikan: <br/> <span t-esc="date"/>
+                            </b>
+                        </center>
+                    </div>
+                    <br/>
+                    <t t-foreach="data.keys()" t-as="brand">
+                        <t t-if="data[brand]">
+                            <b style="margin-bottom: 10px;">
+                                <span t-esc="brand"/>
+                            </b>
+                        </t>
+                        <t t-set="total_penjualan" t-value="0"/>
+                        <table class="table table-bordered table-condensed table-striped">
+                            <tbody>
+                                <tr>
+                                    <td><b>No</b></td>
+                                    <td><b>Transaksi</b></td>
+                                    <td><b>Tgl Transaksi</b></td>
+                                    <td><b>Produk</b></td>
+                                    <td><b>Qty</b></td>
+                                    <td><b>Harga Satuan</b></td>
+                                    <td><b>Total</b></td>
+                                </tr>
+                                <t t-set="number" t-value="1"/>
+                                <t t-foreach="data[brand]" t-as="invoices">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="number"/>
+                                            <t t-set="number" t-value="number + 1"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoices[0]"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoices[1]"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoices[2]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="invoices[3]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(invoices[4])"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(invoices[5])"/>
+                                            <t t-set="total_penjualan" t-value="total_penjualan + invoices[5]"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-xs-4 pull-right">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td><strong>Total</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(total_penjualan)"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                    <br/>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

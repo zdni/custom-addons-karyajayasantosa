@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--
+        Request link
+        -->
+            <!-- <record id="req_link_tracking" model="res.request.link">
+                <field name="name">Lot/Serial Number</field>
+                <field name="object">stock.production.lot</field>
+            </record> -->
+
+
+            <!--
+                Procurement rules
+            -->
+            
+            <!-- <record id="route_warehouse0_mto" model='stock.location.route'>
+                <field name="name">Make To Order</field>
+                <field name="sequence">10</field>
+            </record> -->
+
+            <!--
+        Properties
+        -->
+        <!-- <record forcecreate="True" id="property_stock_supplier" model="ir.property">
+            <field name="name">property_stock_supplier</field>
+            <field name="fields_id" search="[('model','=','res.partner'),('name','=','property_stock_supplier')]"/>
+            <field eval="'stock.location,'+str(stock_location_suppliers)" name="value"/>
+        </record>
+        <record forcecreate="True" id="property_stock_customer" model="ir.property">
+            <field name="name">property_stock_customer</field>
+            <field name="fields_id" search="[('model','=','res.partner'),('name','=','property_stock_customer')]"/>
+            <field eval="'stock.location,'+str(stock_location_customers)" name="value"/>
+        </record>
+        <record forcecreate="True" id="property_stock_procurement" model="ir.property">
+            <field name="name">property_stock_procurement</field>
+            <field name="fields_id" search="[('model','=','product.template'),('name','=','property_stock_procurement')]"/>
+            <field eval="'stock.location,'+str(location_procurement)" name="value"/>
+        </record>
+        <record forcecreate="True" id="property_stock_inventory" model="ir.property">
+            <field name="name">property_stock_inventory</field>
+            <field name="fields_id" search="[('model','=','product.template'),('name','=','property_stock_inventory')]"/>
+            <field eval="'stock.location,'+str(location_inventory)" name="value"/>
+        </record>
+        <record forcecreate="True" id="property_stock_production" model="ir.property">
+            <field name="name">property_stock_production</field>
+            <field name="fields_id" search="[('model','=','product.template'),('name','=','property_stock_production')]"/>
+            <field eval="'stock.location,'+str(location_production)" name="value"/>
+        </record> -->
+
+
+        <!--
+        Resource: stock.warehouse
+        -->
+        
+
+        <!-- <record id="warehouse0" model="stock.warehouse">
+            <field name="partner_id" ref="base.main_partner"/>
+            <field name="code">WH</field>
+        </record> -->
+ 
+        <record id="sequence_stock_internal_reorder" model="ir.sequence">
+            <field name="name">Stock Internal Reordering</field>
+            <field name="code">stock.internal.reorder</field>
+            <field name="prefix">INT-ORD/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--  Run Schedulers -->
+
+        <record id="view_action_internal_reorder_wizard" model="ir.ui.view">
+            <field name="name">Run Internal Reorder</field>
+            <field name="model">stock.internal.reorder.compute</field>
+            <field name="arch" type="xml">
+                <form string="Scheduler Parameters">
+                    <p>
+                        Run Internal Reorder in the background.
+                    </p>
+                    <footer>
+                        <button name="run_calculation" string="Run" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_internal_reorder_wizard" model="ir.actions.act_window">
+            <field name="name">Run Internal Reorder</field>
+            <field name="res_model">stock.internal.reorder.compute</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

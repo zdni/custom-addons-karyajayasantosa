@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record model="ir.actions.act_window" id="action_stock_internal_reorder">
+        <field name="name">Internal Reorder Rules</field>
+        <field name="res_model">stock.internal.reorder</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <record id="action_internal_reorder_wizard" model="ir.actions.act_window">
+        <field name="name">Run Internal Reorder</field>
+        <field name="res_model">stock.internal.reorder.compute</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem name="Internal Reordering Rules"
+              id="stock_internal_reorder"
+              parent="stock.menu_stock_inventory_control" 
+              action="action_stock_internal_reorder"
+              sequence= "100"
+              />
+
+    <menuitem id="stock_internal_reorder_wizard"
+                name="Run Internal Reorder"
+                action="action_internal_reorder_wizard"
+                parent="stock.menu_stock_sched"
+                sequence="100"/>
+</odoo>

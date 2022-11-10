@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="PosTicket">
+        <t t-jquery=".receipt-change" t-operation="after">
+            <t t-if="receipt.total_savings">
+                <div>Anda menghemat sebanyak <t t-esc="widget.format_currency(receipt.total_savings)"/></div>
+            </t>
+        </t>
+    </t>
+
+</templates>

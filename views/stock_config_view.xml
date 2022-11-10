@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_stock_configuration_inherit">
+            <field name="name">stock.res.config.view.inherit</field>
+            <field name="model">stock.config.settings</field>
+            <field name="inherit_id" ref="stock.view_stock_config_settings"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//form" position="inside">
+                        <div string="General information">
+                            <group>
+                                <group string="Setting Store">
+                                    <field name="company_location_store_id" class="oe_inline"/>
+                                    <field name="company_stock_store_id" class="oe_inline"/>
+                                </group>
+                                <group string="Setting Warehouse">
+                                    <field name="company_location_warehouse_id" class="oe_inline"/>
+                                    <field name="company_stock_warehouse_id" class="oe_inline"/>
+                                </group>
+                            </group>
+                            <group string="Setting Transit">
+                                <field name="company_location_transit_id" class="oe_inline"/>
+                            </group>
+                        </div>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

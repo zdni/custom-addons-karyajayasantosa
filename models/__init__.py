@@ -1,0 +1,5 @@
+import product_template
+import res_company
+import stock_config
+import stock_internal
+import stock_warehouse

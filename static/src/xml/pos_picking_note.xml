@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="Orderline">
+        <t t-jquery="ul[class='info-list']" t-operation="append">
+            <t t-if="line.picking_note != ''">
+                <li class="info">
+                    <i class="fa fa-tag" role="img" aria-label="Note" title="Note"/>
+                    <i><t t-esc="line.qty_picking_str" /> <t t-esc="line.picking_note" /></i>
+                </li>
+            </t>
+        </t>
+    </t>
+    <t t-name="PosPickingNoteButton">
+        <t t-if="widget.pos.config.enable_pos_picking_note">
+            <span class="control-button pos-picking-note" id="pos-picking-note">
+                <i class="fa fa-tags" />
+                Picking Note
+            </span>
+        </t>
+    </t>
+    <t t-name="PosPickingNotePopup">
+        <div class="modal-dialog">
+            <div class="popup popup-pos-picking-note">
+                <p class="title">Choose Product to Picking Delivery Order</p>
+                <div class="picking_note_info" style="overflow: scroll; max-height:190px;">
+                    <table id="orderline-table">
+                        <colgroup>
+                            <col width="20%" />
+                        </colgroup>
+                    </table>
+                </div>
+                <!-- <div class="form-group" style="text-align: left; margin: 10px 20px 0px 20px;">
+                    <label style="font-size: 16px;">Keterangan Pengantaran</label>
+                    <input style="font-size: 12px; width: 100%;" type="text" name="picking-address" id="picking-address"/>
+                </div> -->
+                <div class="footer">
+                    <div class="button confirm">
+                        Oke
+                    </div>
+                    <div class="button cancel">
+                        Batal
+                    </div>
+                    <div class="button" id="cancel-picking">
+                        Batalkan Pengiriman
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-extend="PosTicket">
+        <t t-jquery=".receipt-orderlines" t-operation="replace">
+            <table class='receipt-orderlines'>
+                <colgroup>
+                    <col width='50%' />
+                    <col width='25%' />
+                    <col width='25%' />
+                </colgroup>
+                <tr t-foreach="orderlines" t-as="orderline">
+                    <td>
+                        <t t-esc="orderline.get_product().display_name"/>
+                         <t t-if="orderline.get_discount() > 0">
+                            <div class="pos-disc-font">
+                                With a <t t-esc="orderline.get_discount()"/>% discount
+                            </div>
+                        </t>
+                        <t t-if="orderline.get_picking_note()">
+                            <div class="pos-disc-font">
+                                <t t-esc="orderline.get_qty_picking_str()"/> <t t-esc="orderline.get_picking_note()"/>
+                            </div>
+                        </t>
+                    </td>
+                    <td class="pos-right-align">
+                        <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                    </td>
+                    <td class="pos-right-align">
+                        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                    </td>
+                </tr>
+            </table>
+        </t>
+        <t t-jquery=".receipt-change" t-operation="after">
+            <t t-if="order.get_picking_address()">
+                <table class='picking-address'>
+                    <tr>
+                        <td>Address:</td>
+                        <td class="pos-right-align">
+                            <t t-esc="order.get_picking_address()"/>
+                        </td></tr>
+                </table>
+            </t>
+        </t>
+    </t>
+</templates>

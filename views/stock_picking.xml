@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="stock_picking_note_form">
+        <field name="name">stock.picking.form.view.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <header>
+                <button string="Picking Note" states="done" icon="fa-print" type="object" name="dummy_picking" custom="print_picking_note"/>
+            </header>
+
+            <xpath expr="//field[@name='origin']" position="after">
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page string="Picking Note">
+                    <group>
+                        <group>
+                            <field name="recipient" string="Nama Penerima"/>
+                            <field name="phone_number" string="Nomor Telepon"/>
+                        </group>
+                        <group>
+                            <field name="delivery_date" string="Tanggal Pengantaran"/>
+                            <field name="delivery_address" string="Alamat Pengantaran"/>
+                        </group>
+                    </group>
+                    <button string="Refresh Printer Data" icon="fa-print"
+                            states="done" type="object" name="action_refresh_picking_data"/>
+                    <pre>
+                        <field name="picking_data"/>
+                    </pre>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="dotmatrix_picking" model="mail.template">
+            <field name="name">Dot Matrix Picking Note</field>
+            <field name="model_id" ref="stock.model_stock_picking"/>
+            <field name="subject">Dot Matrix Picking Note</field>
+            <field name="body_html"><![CDATA[
+
+
+${object.company_id.name.ljust(105)} ${'DELIVERY ORDER'.rjust(14)} ${object.name.rjust(15)}
+Jl. Piere Tendean No. 146, Watubangga, Baruga 
+0852-4098-9990
+${''.rjust(136, '-')}
+${'SURAT JALAN'.center(136)}
+${'Nama Penerima'.ljust(22)} ${':'} ${object.recipient}
+${'Nomor Telepon'.ljust(22)} ${':'} ${object.phone_number}
+${'Alamat Pengantaran'.ljust(22)} ${':'} ${object.delivery_address}
+${'Waktu Pengantaran'.ljust(22)} ${':'} ${object.delivery_date}
+${''.rjust(136, '-')}
+ ${'Produk'.ljust(86)}|${'Satuan Unit'.center(13)}|${'Jumlah dikirim'.center(16)}|${'Jumlah diterima'.rjust(16)}
+${''.rjust(136, '-')}
+% for l in object.move_lines
+% if l.picking_note != ''
+ ${l.product_id.display_name[:86].ljust(86)}|${l.product_uom.name[:13].center(13)}|${"{:4,.2f}".format(l.qty_picking).center(16)}|
+% endif
+% endfor
+${''.rjust(136, '-')}
+
+Catatan
+Penerima membukukan tanda tangan dan stempel setelah:
+1. Penerima memeriksa barang yang diterima dalam keadaan baik atau
+   tidak rusak dan sesuai dengan Surat Jalan
+2. Karya Jaya Santosa tidak menerima klaim setelah SJ sudah 
+   disetujui
+3. Mengetahui dan menyetujui bahwa barang yang belum dilunasi masih 
+   merupakan milik Karya Jaya Santosa sehingga tidak keberatan
+   apabila sewaktu-waktu ditarik kembali
+
+${''.center(23)}${'Pengirim'.center(20)} ${''.center(48)} ${'Penerima'.center(20)}
+
+
+
+${''.center(23)}${''.center(20,'-')} ${''.center(48)} ${''.center(20,'-')}
+
+
+]]></field>
+        </record>
+
+</odoo>

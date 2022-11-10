@@ -1,0 +1,5 @@
+import point_of_sale
+import pos_order_line
+import pos_order
+import stock_move
+import stock_picking

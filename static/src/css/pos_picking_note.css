@@ -1,0 +1,16 @@
+.picking_note_info table{
+	width: 100%;
+	font-size: 15px
+}
+.picking_note_info table tr td{
+	padding: 10px;
+}
+.picking_note_info table tr td:first-child{
+	text-align: right;
+}
+.picking_note_info table tr td:last-child{
+	text-align: left;
+}
+.hidden_note {
+	display: none;
+}

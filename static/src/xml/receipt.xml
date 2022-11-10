@@ -1,0 +1,193 @@
+<t t-name="XmlReceipt">
+    <receipt align='center' width='33' value-thousands-separator='.' >
+    <!-- HEADER -->
+    <div>
+        <!-- <line size='double-height'> -->
+            <pre size='double-height'><t t-esc='receipt.company.name' /></pre>
+            Jl. Piere Tendean No. 146<br />Kendari<br />
+            0852 4098 9990<br />
+            Kasir: <t t-esc='receipt.cashier' /><br />
+            <t t-if="order.get_client()">
+                Pelanggan: <t t-esc="order.get_client().name" />
+            <br />
+            </t>
+            <t t-esc="order.formatted_validation_date"/><br /><t t-esc="order.name"/>
+            <br />
+    </div>
+    <div>---------------------------------</div>
+
+        <!-- Orderlines -->
+
+        <div class='orderlines' line-ratio='0.6'>
+            <t t-foreach='receipt.orderlines' t-as='line'>
+                <t t-set='simple' t-value='line.discount === 0 and line.unit_name === "Unit(s)" and line.quantity === 1' />
+                <t t-if='simple'>
+                    <line>
+                        <left><t t-esc='line.product_name_wrapped[0]' /></left>
+                        <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='line.price_display' /></value></right>
+                    </line>
+                    <t t-call="XmlReceiptWrappedProductNameLines"/>
+                </t>
+                <t t-if='!simple'>
+                    <line><left><t t-esc='line.product_name_wrapped[0]' /></left></line>
+                    <t t-call="XmlReceiptWrappedProductNameLines"/>
+                    <t t-if='line.discount !== 0'>
+                        <line indent='1'><left>Discount: <t t-esc='line.discount' />%</left></line>
+                    </t>
+                    <line>
+                    <!--<line indent='1'>-->
+                        <left>
+                            <value t-att-value-decimals='pos.dp["Product Unit of Measure"]' value-autoint='on'>
+                                <t t-esc='line.quantity' />
+                            </value>
+                            <t t-if='line.unit_name !== "Unit(s)"'>
+                                <t t-esc='line.unit_name' />
+                                </t>
+                            x
+                            <value t-att-value-decimals='pos.dp["Product Price"]'>
+                                <t t-esc='line.price' />
+                            </value>
+                        </left>
+                        <right>
+                            <value t-att-value-decimals='pos.currency.decimals'><t t-esc='line.price_display' /></value>
+                        </right>
+                    </line>
+                </t>
+            </t>
+        </div>
+
+        <!-- Subtotal -->
+
+        <t t-set='taxincluded' t-value='Math.abs(receipt.subtotal - receipt.total_with_tax) &lt;= 0.000001' />
+        <t t-if='!taxincluded'>
+            <line><right>--------</right></line>
+            <line><left>Subtotal</left><right><value t-att-value-decimals='pos.currency.decimals'><t t-esc="receipt.subtotal" /></value></right></line>
+            <t t-foreach='receipt.tax_details' t-as='tax'>
+                <line>
+                    <left><t t-esc='tax.name' /></left>
+                    <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='tax.amount' /></value></right>
+                </line>
+            </t>
+        </t>
+
+        <!-- Total -->
+
+        <line><right>--------</right></line>
+        <line class='total' size='double-height'>
+            <left><pre>TOTAL</pre></left>
+            <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='receipt.total_with_tax' /></value></right>
+        </line>
+
+        <!-- Payment Lines -->
+
+        <t t-foreach='paymentlines' t-as='line'>
+            <line>
+                <left><t t-esc='line.name' /></left>
+                <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='line.get_amount()'/></value></right>
+            </line>
+        </t>
+
+        <line size='double-height'>
+            <left><pre>KEMBALIAN</pre></left>
+            <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='receipt.change' /></value></right>
+        </line>
+        <br/>
+
+        <!-- Extra Payment Info -->
+
+        <t t-if='receipt.total_discount'>
+            <line>
+                <left>Diskon</left>
+                <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='receipt.total_discount'/></value></right>
+            </line>
+        </t>
+        <t t-if='taxincluded'>
+            <t t-foreach='receipt.tax_details' t-as='tax'>
+                <line>
+                    <left><t t-esc='tax.name' /></left>
+                    <right><value t-att-value-decimals='pos.currency.decimals'><t t-esc='tax.amount' /></value></right>
+                    </line>
+            </t>
+        </t>
+
+        <div class='before-footer' />
+
+        <!-- Footer -->
+        <t t-if='receipt.footer_xml'>
+            <t t-raw='receipt.footer_xml' />
+        </t>
+
+        <t t-if='!receipt.footer_xml and receipt.footer'>
+            <br/>
+            <t t-esc='receipt.footer' />
+            <br/>
+            <br/>
+        </t>
+
+        <br />
+        <br />
+    
+        <div>---------------------------------</div>
+        <br />
+        <t t-if="receipt.picking_address">
+            <div>
+                <pre size='double-height'>
+                    <t t-esc='receipt.company.name' />
+                </pre>
+                Jl. Piere Tendean No. 146
+                <br />
+                Kendari
+                <br />
+                0852 4098 9990
+                <br />
+                Kasir: <t t-esc='receipt.cashier' /><br />
+            </div>
+            <div size='double-height'>
+                <b>Surat Jalan</b>
+            </div>
+            <br />
+            <div align="left">KET :</div>
+            <div align="left">
+                <b><t t-esc="receipt.picking_address"/></b>
+            </div>
+            <br />
+            <br />
+            <line>
+                <left>PRODUK :</left>
+            </line>
+            <div class="orderlines" line-ratio='0.6'>
+                <ol>
+                    <t t-foreach="receipt.orderlines" t-as="line">
+                        <t t-if="line.picking_note">
+                            <li>
+                                <line>
+                                    <left><t t-esc='line.product_name_wrapped[0]' /></left>
+                                    <right><t t-esc="line.qty_picking_str"/></right>
+                                </line>
+                                <t t-call="XmlReceiptWrappedProductNameLines"/>
+                            </li>
+                        </t>
+                    </t>
+                </ol>
+            </div>
+            <line>
+                <left>Pengirim</left>
+            </line>
+            <br />
+            <br />
+            <line>
+                <left>---------------------------------</left>
+            </line>
+            <br />
+            <br />
+            <line>
+                <left>Penerima</left>
+            </line>
+            <br />
+            <br />
+            <line>
+                <left>---------------------------------</left>
+            </line>
+        </t>
+    </receipt>
+</t>

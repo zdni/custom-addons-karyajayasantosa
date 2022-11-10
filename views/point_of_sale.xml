@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="pos_picking_note_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <group name="features" position="after">
+                <group name="pos_picking_note" string="POS Picking Note">
+                    <group>
+                        <field name="enable_pos_picking_note"/>
+                    </group>
+                    <group>
+                        <field name="picking_note_msg" 
+                            attrs="{'invisible': [('enable_pos_picking_note', '=', False)], 'required': [('enable_pos_picking_note', '=', True)]}" />
+                    </group>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>

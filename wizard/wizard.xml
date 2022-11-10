@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="laporan_omset_margin_sales_form_view" model="ir.ui.view">
+            <field name="name">sale.salesperson_omset.report.form.view</field>
+            <field name="model">sale.salesperson_omset.report</field>
+            <field name="arch" type="xml">
+                <form string="Laporan Omset dan Margin per Salesperson">
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="salespersons" widget="many2many_tags" domain="[('agent', '=', True)]"/>
+                        </group>
+                        <group>
+                            <field name="visible"/>
+                        </group>
+                        <group>
+                            <field name="age"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="print_laporan_omset_margin" string="Print" class="oe_highlight"
+                                type="object"/>
+                        Or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+
+        <record id="action_laporan_omset_margin_sales_wizard" model="ir.actions.act_window">
+            <field name="name">Laporan Omset dan Margin per Salesperson</field>
+            <field name="res_model">sale.salesperson_omset.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_pos_report_wizard"
+                  name="Laporan Omset dan Margin per Salesperson"
+                  action="action_laporan_omset_margin_sales_wizard"
+                  parent="account.menu_finance_legal_statement"
+                  sequence="99"/>
+
+    </data>
+</odoo>

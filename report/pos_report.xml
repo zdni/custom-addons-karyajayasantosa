@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_point_of_sale_saleperson_wise"
+                string="Saleperson wise report"
+                model="point_of_sale.pos.report"
+                report_type="qweb-pdf"
+                file="pos_report_saleperson_groupby.pos_temp"
+                name="pos_report_saleperson_groupby.pos_temp"
+        />
+    </data>
+</odoo>

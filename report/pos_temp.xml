@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pos_temp">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                    <div class="row">
+                    <center>
+                        <b>
+                            <h4>Sales Report By Sale Person</h4>
+                        </b>
+                    </center>
+                    <center>
+                        <b>
+                            <span t-esc="start_date"/>
+                            To
+                            <span t-esc="end_date"/>
+                        </b>
+                    </center>
+                </div>
+                <br/>
+                <t t-set="total_sum_all" t-value="0"/>
+
+                <t t-foreach="data.keys()" t-as="user">
+                    <center>
+                        <h3>
+                            <span>Sale Person :</span>
+                            <span t-esc="user"/>
+                        </h3>
+                    </center>
+
+                    <t t-foreach="data[user]" t-as="session">
+                        <t t-set="total_sum" t-value="0"/>
+                        <h4>
+                             <b>
+                                <span>Session :</span>
+                                <span t-esc="session['name']"/>
+                            </b>
+                        </h4>
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Bank / Cash</th>
+                                    <th >Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>   
+                                <tr  t-foreach="session['bank_statements']" t-as="statement" >
+                                    <td >
+                                        <span t-esc="statement['journal_name']"/>
+                                    </td>
+                                    <td >
+                                        <span t-esc="'{:,}'.format(statement['balance_end'])"/>
+                                    </td>
+                                </tr>       
+                            </tbody>
+                        </table>
+                        <!-- bank statement -->
+                        <t t-foreach="session['orders']" t-as="order">
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Order Name</th>
+                                        <th class="text-center">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr >
+                                        <td>
+                                            <span t-esc="order['name']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="order['date_order']"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Product Name</b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b>Qty</b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b>Price</b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b>Discount (%)</b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b>Sub Total</b>
+                                        </td>
+                                    </tr>     
+                                    <tr  t-foreach="order['orderlines']" t-as="order_line" >
+                                        <td>
+                                            <span t-esc="order_line['product_name']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="order_line['qty']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="'{:,}'.format(order_line['price_unit'])"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="order_line['discount']"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="'{:,}'.format(order_line['price_subtotal_incl'])"/>
+                                        </td>
+                                    </tr>        
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td class="text-center">
+                                        </td>
+                                        <td class="text-center">
+                                        </td>
+                                        <td class="text-right">
+                                            <b>
+                                                <span>Total :</span>
+                                            </b>
+                                        </td>
+                                        <td class="text-right">
+                                            <b>
+                                                <span t-esc="'{:,}'.format(order['amount_total'])"/>
+                                                <t t-set="total_sum" t-value="total_sum + order['amount_total'] "/>
+                                            </b>
+                                        </td>
+                                    </tr>      
+                                </tbody>
+                            </table>
+                        </t>
+                        <div class="row">
+                            <div class="col-xs-4 pull-right">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td><strong>Total / Session</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(total_sum)"/>
+                                            <t t-set="total_sum_all" t-value="total_sum_all + total_sum "/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <hr style="background-color:black; color:black" />
+                    </t>
+                </t>
+
+                <div class="row">
+                    <div class="col-xs-4 pull-right">
+                        <table class="table table-condensed">
+                            <tr>
+                                <td><strong>Total All</strong></td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,}'.format(total_sum_all)"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr style="background-color:black; color:black" />
+            </div>
+        </t>
+    </template>
+</odoo>

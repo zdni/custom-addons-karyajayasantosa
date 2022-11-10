@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="pos_report_form_view" model="ir.ui.view">
+            <field name="name">point_of_sale.pos.report.form.view</field>
+            <field name="model">point_of_sale.pos.report</field>
+            <field name="arch" type="xml">
+                <form string="Laporan PoS">
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="user_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="print_salesperson_vise_report" string="Print Report" class="oe_highlight"
+                                type="object"/>
+                        Or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_pos_wizard" model="ir.actions.act_window">
+            <field name="name">Laporan PoS</field>
+            <field name="res_model">point_of_sale.pos.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="sr_menu_sale_report_salesperson_wizard"
+                  name="Laporan PoS"
+                  action="action_report_pos_wizard"
+                  parent="point_of_sale.menu_point_rep"
+                  sequence="100"/>
+    </data>
+</odoo>

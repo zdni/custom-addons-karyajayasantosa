@@ -1,0 +1,19 @@
+.bank_charge_info table{
+	width: 100%;
+	font-size: 15px
+}
+.bank_charge_info table tr td{
+	padding: 10px;
+}
+.bank_charge_info table tr td:first-child{
+	text-align: right;
+}
+.bank_charge_info table tr td:last-child{
+	text-align: left;
+}
+.hidden_subentry {
+	display: none;
+}
+.hidden {
+	display: none;
+}

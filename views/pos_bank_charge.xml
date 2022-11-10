@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record id="pos_bank_charge_view_form" model="ir.ui.view">
+            <field name="name">pos.bank.charge.view.form</field>
+            <field name="model">pos.bank.charge</field>
+            <field name="arch" type="xml">
+                <form string="POS Bank Charge">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" class="oe_inline"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="journal_id" options="{'no_create': True, 'no_create_edit':True}" />
+                            </group>
+                            <group>
+                                <field name="active" />
+                            </group>
+                        </group>
+                        <group>
+                            <field name="line_ids" nolabel="1">
+                                <tree string="Configuration" editable="1">
+                                    <field name="card_type" />
+                                    <field name="charge_type" />
+                                    <field name="value" />
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <separator string="POS Config" colspan="4"/>
+                            <field name="config_ids" nolabel="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>        
+
+        <record id="pos_bank_charge_view_tree" model="ir.ui.view">
+            <field name="name">pos.bank.charge.view.tree</field>
+            <field name="model">pos.bank.charge</field>
+            <field name="arch" type="xml">
+                <tree string="Bank Charge">
+                    <field name="name" />
+                    <field name="journal_id" />
+                    <field name="active" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_pos_bank_charge">
+            <field name="name">POS Bank Charge</field>
+            <field name="res_model">pos.bank.charge</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_bank_charge"
+                  name="Bank Charge"
+                  parent="point_of_sale.menu_point_root"
+                  groups="point_of_sale.group_pos_user"
+        />
+
+        <menuitem
+            id="pos_bank_charge_menu"
+            name="Bank Charge"
+            action="action_pos_bank_charge"
+            parent="menu_bank_charge"
+            sequence="10"/>
+    
+    </data>
+</odoo>

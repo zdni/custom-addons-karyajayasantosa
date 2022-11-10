@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="ace_view_pos_config_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="POS Bank Charge">
+                        <group string="Bank Charge">
+                            <field name="enable_pos_bank_charge"/>
+                            <field name="bank_charge_product_id" 
+                                attrs="{'invisible': [('enable_pos_bank_charge', '=', False)], 'required': [('enable_pos_bank_charge', '=', True)]}" />
+                            <field name="bank_charge_ids" widget="many2many_tags"/>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

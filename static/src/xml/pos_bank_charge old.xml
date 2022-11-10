@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="PaymentScreenWidget">
+		<t t-jquery="div.payment-buttons" t-operation="append">
+			<div class='button js_pos_bank_charge'>
+                <i class='fa fa-gift' /> 
+                <span>
+                	Bank Charge
+                </span>
+            </div>
+			<div class='button js_remove_pos_bank_charge hidden'>
+                <i class='fa fa-times' /> 
+                <span>
+                	Hapus Bank Charge
+                </span>
+            </div>
+		</t>
+	</t>
+    <t t-name="PosBankChargePopup">
+        <div class="modal-dialog">
+            <div class="popup popup-pos-global-discount">
+                <p class="title">POS Bank Charge</p>
+                <div class="bank_charge_info">
+                    <table>
+                        <colgroup>
+                            <col width="50%" />
+                        </colgroup>
+                        <tr>
+                            <td>Pilih Tipe Charge:</td>
+                            <td>
+                                <select name="type_charge" id="type_charge" class="type_charge">
+                                    <option value="Persentase">Persentase</option>
+                                    <option value="Fix">Fix</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pilih Bank:</td>
+                            <td>
+                                <select name="bank_payment" id="bank_payment" class="bank_payment">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Bank Charge: </td>
+                            <td><input type="text" class="bank_charge_input"/></td>
+                        </tr>
+                        <tr>
+                            <td>Jumlah Charge:</td>
+                            <td><span class="total_bank_charge"></span></td>
+                            <input type="hidden" class="input_total_bank_charge"/>
+                        </tr>
+                    </table>
+                </div>
+                <div class="footer">
+                    <div class="button confirm">
+                        Oke
+                    </div>
+                    <div class="button cancel">
+                        Batal
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    <t t-extend="PaymentScreen-Paymentlines">
+        <t t-jquery="table.paymentlines" t-operation="after">
+			<div style="font-weight: bold; margin-top: 8px;" class="hidden_subentry">
+                <span class="detail_bank_charge">Bank Charge: Rp. 0.00</span>
+            </div>
+		</t>
+    </t>
+</templates>

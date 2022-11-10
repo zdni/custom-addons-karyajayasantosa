@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_warehouse_orderpoint_form_inherit">
+            <field name="name">stock.warehouse.orderpoint.inherit.form</field>
+            <field name="model">stock.warehouse.orderpoint</field>
+            <field name="inherit_id" ref="stock.view_warehouse_orderpoint_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//sheet//group//group[2]//field[@name='warehouse_id']" position="before">
+                    <field name="location_ids" widget="many2many_tags" domain="[('usage', '=', 'internal')]" />
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+</odoo>

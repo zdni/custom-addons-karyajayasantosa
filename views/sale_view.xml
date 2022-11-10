@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order_product_stock_form" model="ir.ui.view">
+        <field name="name">sale.order.product.stock.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="priority" eval="8"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/form/field[@name='name']" position="after">
+                <!-- <label for="location_id"/>
+                <field name="location_id"/>  -->
+                <label for="product_stocks"/>
+                <field name="product_stocks"/> 
+            </xpath> 
+        </field>
+    </record>
+
+    <record id="product_stock_list" model="ir.ui.view">
+        <field name="name">product.stock.list</field>
+        <field name="model">product.stock</field>
+        <field name="type">tree</field>
+        <field name="priority" eval="8"/>
+        <field name="arch" type="xml">
+            <tree string="Product Stocks">
+                <!-- <field name="name" /> -->
+                <field name="location_id"/>
+                <field name="stock_qty"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

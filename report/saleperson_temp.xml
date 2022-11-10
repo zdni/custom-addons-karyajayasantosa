@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="saleperson_temp">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                    <div class="row">
+                    <center>
+                        <b>
+                            <h4>Sales Report By Sale Person</h4>
+                        </b>
+                    </center>
+                    <center>
+                        <b>
+                            <span t-esc="start_date"/>
+                            To
+                            <span t-esc="end_date"/>
+                        </b>
+                    </center>
+                </div>
+                <br/>
+                <t t-foreach="data.keys()" t-as="user">
+                    <center>
+                        <b>
+                            <span>Sale Person :</span>
+                            <span t-esc="user"/>
+                        </b>
+                    </center>
+                    
+                    <t t-foreach="data[user].keys()" t-as="city">
+                        <t t-if="len(data[user][city]) > 0">
+                            <center>
+                                <span>Kota :</span>
+                                <span t-esc="city"/>
+                            </center>
+                            <t t-set="total_sum" t-value="0"/>
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Pelanggan</th>
+                                        <th class="text-center">No Transaksi</th>
+                                        <th class="text-center">Tanggal</th>
+                                        <th class="text-right">Total Transaksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="data[user][city]" t-as="order">
+                                        <td>
+                                            <span t-esc="order[3]"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="order[0]"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-esc="order[1]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(order[2])"/>
+                                            <t t-set="total_sum" t-value="total_sum + order[2]"/>
+                                        </td>
+                                    </tr>            
+                                </tbody>
+                            </table>
+
+                            <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                    <table class="table table-condensed">
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,}'.format(total_sum)"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

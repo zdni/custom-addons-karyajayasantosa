@@ -1,0 +1,2 @@
+import product_brand
+import product_template

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="pos_lock_mode_pos_config_inherit">
+            <field name="name">pos.lock.mode.pos.config.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <field name="journal_ids" position="after">
+                    <separator string="Otorisasi" colspan="4"/>
+                    <group>
+                        <group>
+                            <field name="lock_price"/>
+                        </group>
+                        <group>
+                            <field name="lock_discount"/>
+                        </group>
+                        <group>
+                            <field name="authorization_user_ids" widget="many2many_tags" attrs="{'invisible':[('lock_price', '=', False), ('lock_discount', '=', False)], 'required':['|', ('lock_price', '=', True), ('lock_discount', '=', True)]}"/>
+                            <field name="string_pin" invisible="True"/>
+                        </group>
+                    </group>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

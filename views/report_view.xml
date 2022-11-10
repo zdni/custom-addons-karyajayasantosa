@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_invoices_paid_form_view" model="ir.ui.view">
+            <field name="name">account.invoices.paid.report.form.view</field>
+            <field name="model">account.invoices.paid.report</field>
+            <field name="arch" type="xml">
+                <form string="Laporan PoS">
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="print_vise_report" string="Print Report" class="oe_highlight"
+                                type="object"/>
+                        Or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+
+        <record id="action_report_account_invoices_paid_wizard" model="ir.actions.act_window">
+            <field name="name">Paid Invoices Report</field>
+            <field name="res_model">account.invoices.paid.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="account_report_paid_invoice_wizard"
+                  name="Paid Invoices Report"
+                  action="action_report_account_invoices_paid_wizard"
+                  parent="account.menu_finance_legal_statement"
+                  sequence="100"/>
+    </data>
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="report_invoice_payment_form_view" model="ir.ui.view">
+            <field name="name">report.invoice.payment.form.view</field>
+            <field name="model">report.invoice.payment</field>
+            <field name="arch" type="xml">
+                <form string="Laporan Pembayaran Piutang">
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="city_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="print_report_invoice_payment" string="Print Report" class="oe_highlight"
+                                type="object"/>
+                        Or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+
+        <record id="action_report_invoice_payment_wizard" model="ir.actions.act_window">
+            <field name="name">Laporan Pembayaran Piutang</field>
+            <field name="res_model">report.invoice.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_report_invoice_payment"
+                  name="Laporan Pembayaran Piutang"
+                  action="action_report_invoice_payment_wizard"
+                  parent="account.menu_finance_legal_statement"
+                  sequence="1"/>
+    </data>
+</odoo>

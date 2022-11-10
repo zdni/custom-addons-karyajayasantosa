@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="invoice_payment_temp">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                    <div class="row">
+                    <center>
+                        <b>
+                            <h4>Laporan Pembayaran Piutang</h4>
+                        </b>
+                    </center>
+                    <center>
+                        <b>
+                            <span t-esc="start_date"/>
+                            To
+                            <span t-esc="end_date"/>
+                        </b>
+                    </center>
+                </div>
+                <br/>
+                <t t-set="total_payment" t-value="0"/>
+                <t t-foreach="data.keys()" t-as="city">
+                    <t t-if="data[city]">
+                        <center style="margin-bottom: 10px;">
+                            <b>
+                                <span t-esc="city"/>
+                            </b>
+                        </center>
+                    </t>
+                    <t t-set="total_sum" t-value="0"/>
+                    <t t-foreach="data[city]" t-as="invoices">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <table class="table table-condensed" style="margin-bottom:-2px">
+                                    <thead >
+                                        <tr>
+                                            <th>Pelanggan: </th>
+                                            <td>
+                                                <span t-esc="invoices[0]"/>
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <table class="table table-bordered table-condensed table-striped">
+                            <tbody>
+                                <tr>
+                                    <th>No Invoice/BG</th>
+                                    <th>Jns Pembayaran</th>
+                                    <th>Tgl Pembayaran</th>
+                                    <th class="text-right">T. Tagihan</th>
+                                    <th class="text-right">T. Pembayaran</th>
+                                </tr>
+                                <t t-set="total_invoice" t-value="0"/>
+                                <t t-foreach="invoices[2]" t-as="invoice">
+                                    <tr>
+                                        <td>
+                                            <span t-esc="invoice[0]"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoice[5]"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="invoice[2]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(invoice[4])"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(invoice[3])"/>
+                                            <t t-set="total_sum" t-value="total_sum + invoice[3]"/>
+                                            <t t-set="total_invoice" t-value="total_invoice + invoice[3]"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="8" class="text-right">
+                                        <span t-esc="'{:,}'.format(total_invoice)"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <t t-if="total_sum > 0">
+                        <div class="row">
+                            <div class="col-xs-4 pull-right">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td><strong>Total</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(total_sum)"/>
+                                            <t t-set="total_payment" t-value="total_payment + total_sum"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+
+                <div class="row">
+                    <div class="col-xs-4 pull-right">
+                        <table class="table table-condensed">
+                            <tr>
+                                <td><strong>Total Pembayaran</strong></td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,}'.format(total_payment)"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

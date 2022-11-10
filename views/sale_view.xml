@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sale_report_customer_form_view" model="ir.ui.view">
+            <field name="name">sale.so.report.form.view</field>
+            <field name="model">sale.so.report</field>
+            <field name="arch" type="xml">
+                <form string="Sales Report By Customer">
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="partner_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="print_so_report_customer" string="Print Report" class="oe_highlight"
+                                type="object"/>
+                        Or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+
+        <record id="action_sale_report_customer_wizard" model="ir.actions.act_window">
+            <field name="name">Laporan Penjualan Per Pelanggan</field>
+            <field name="res_model">sale.so.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_sale_report_customer_wizard"
+                  name="Laporan Penjualan Per Pelanggan"
+                  action="action_sale_report_customer_wizard"
+                  parent="sales_team.menu_sale_report"
+                  sequence="1"/>
+    </data>
+</odoo>

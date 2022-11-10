@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_so_report_customer"
+                string="SO Report groupby Customer"
+                model="sale.so.report"
+                report_type="qweb-pdf"
+                file="so_report_groupby_customer.so_report_groupby_customer"
+                name="so_report_groupby_customer.so_report_groupby_customer"
+        />
+    </data>
+</odoo>

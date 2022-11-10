@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="so_report_groupby_customer">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                    <div class="row">
+                    <center>
+                        <b>
+                            <h4>Laporan Penjualan per Pelanggan</h4>
+                        </b>
+                    </center>
+                    <center>
+                        <b>
+                            <span t-esc="start_date"/>
+                            To
+                            <span t-esc="end_date"/>
+                        </b>
+                    </center>
+                </div>
+                <br/>
+                <t t-set="total_sum" t-value="0"/>
+                <t t-foreach="data.keys()" t-as="customer">
+                    <t t-if="data[customer]">
+                        <center style="margin-bottom: 10px;">
+                            <b>
+                                <span>Pelanggan :</span>
+                                <span t-esc="customer"/>
+                            </b>
+                        </center>
+                    </t>
+                    <t t-foreach="data[customer]" t-as="so">
+                        <table class="table table-condensed table-striped">
+                            <tbody>
+                                <tr>
+                                    <td><b>No Transaksi</b></td>
+                                    <td><b>Tanggal</b></td>
+                                    <td><b>Salesperson</b></td>
+                                </tr>
+                                <tr>
+                                    <td> <span t-esc="so[0]"/> </td>
+                                    <td> <span t-esc="so[1]"/> </td>
+                                    <td> <span t-esc="so[2]"/> </td>
+                                </tr>         
+                            </tbody>
+                        </table>
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th class="text-right">Jumlah</th>
+                                    <th>Satuan</th>
+                                    <th class="text-right">Harga</th>
+                                    <th>Pajak</th>
+                                    <th class="text-right">Diskon</th>
+                                    <th class="text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="so[3]" t-as="orderline">
+                                    <td>
+                                        <span t-esc="orderline[0]"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="orderline[1]"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="orderline[2]"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,}'.format(orderline[3])"/>
+                                    </td>
+                                    <td>
+                                        <span t-esc="orderline[4]"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,}'.format(orderline[5])"/>
+                                    </td>
+                                    <td class="text-right">
+                                        <span t-esc="'{:,}'.format(orderline[6])"/>
+                                    </td>
+                                </tr>            
+                            </tbody>
+                        </table>
+
+                        <div class="row">
+                            <div class="col-xs-4 pull-right">
+                                <table class="table table-condensed">
+                                    <tr>
+                                        <td><strong>Total Sebelum Pajak</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(so[4])"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Pajak</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(so[5])"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Total Sebelum Diskon</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(so[6])"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Diskon</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(so[7])"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-black">
+                                        <td><strong>Total</strong></td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(so[8])"/>
+                                            <t t-set="total_sum" t-value="total_sum + so[8]"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+
+                </t>
+
+                <div class="row">
+                    <div class="col-xs-4 pull-right">
+                        <table class="table table-condensed">
+                            <tr>
+                                <td><strong>Total Penjualan</strong></td>
+                                <td class="text-right">
+                                    <span t-esc="'{:,}'.format(total_sum)"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

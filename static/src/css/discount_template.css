@@ -1,0 +1,16 @@
+.discount_global_info table{
+	width: 100%;
+	font-size: 15px
+}
+.discount_global_info table tr td{
+	padding: 10px;
+}
+.discount_global_info table tr td:first-child{
+	text-align: right;
+}
+.discount_global_info table tr td:last-child{
+	text-align: left;
+}
+.hidden_subentry {
+	display: none;
+}

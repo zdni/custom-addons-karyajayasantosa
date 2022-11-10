@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="XmlReceipt">
+        <t t-jquery="line[class*='total']" t-operation="before">
+            <t t-if="pos.config.promotion == true and receipt.promotion_amount">
+                <line class='total' size='double-height'>
+                    <left><pre>        Promosi</pre></left>
+                    <right><value><t t-esc='receipt.promotion_amount || 0.00' /></value></right>
+                </line>
+                <line><right>--------</right></line>
+            </t>
+        </t>
+    </t>
+
+</templates>

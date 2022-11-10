@@ -1,0 +1,51 @@
+.pos {
+    font-family: 'Roboto', sans-serif;
+}
+
+.pos.pos-content {
+    font-family: 'Roboto', sans-serif;
+}
+
+.item-selected {
+    border: 2px solid #6ec89b !important;
+}
+
+.pos .popup .footer {
+    border-top: none;
+}
+
+.pos .popup .title {
+    font-weight: 900;
+    border-bottom: solid 1px #FFC107;
+}
+
+.pos .btn {
+    background-color: #9E9E9E;
+    color: black;
+}
+
+.pos .popup input, .pos .popup-input {
+    width: 90%;
+    box-shadow: 0px 0px 0px 1px #795548 inset;
+}
+
+.pos .form-footer {
+    max-width: 400px;
+    padding-left: 21px;
+    padding-right: 37px;
+}
+
+.pos .left_button {
+    text-align: center;;
+    line-height: initial;
+    margin: 10px !important;
+}
+
+.pos .promotion_active {
+    width: 100%;
+    border-bottom: 1px solid #bbb2a1;
+    font-size: 14px;
+    padding-left: 20px;
+    text-align: left;
+    color: #393939;
+}

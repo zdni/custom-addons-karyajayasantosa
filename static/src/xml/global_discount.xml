@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="PosGlobalDiscountButton">
+        <t t-if="widget.pos.config.enable_pos_discount_global">
+            <span class="control-button global-discount" id="global-discount">
+                <i class="fa fa-percent" />
+                Diskon Global
+            </span>
+        </t>
+    </t>
+    <t t-name="PosGlobalDiscountPopup">
+        <div class="modal-dialog">
+            <div class="popup popup-pos-global-discount">
+                <p class="title">Discount Global POS</p>
+                <div class="discount_global_info">
+                    <table>
+                        <colgroup>
+                            <col width="50%" />
+                        </colgroup>
+                        <tr>
+                            <td>Masukkan Diskon:</td>
+                            <td><input type="number" min="0" max="100" class="discount_input"/></td>
+                        </tr>
+                        <tr>
+                            <td>Jumlah Diskon yang diperoleh:</td>
+                            <td><span class="total_discount_earned"></span></td>
+                            <input type="hidden" class="total_discount_earned_hidden"/>
+                        </tr>
+                    </table>
+                </div>
+                <div class="footer">
+                    <div class="button confirm">
+                        Oke
+                    </div>
+                    <div class="button cancel">
+                        Batal
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    <t t-extend="PosTicket">
+		<t t-jquery="[t-if='receipt.footer']" t-operation="before">
+		    <t t-if="widget.pos.config.discount_global_product_id and order.get_has_discount()">
+		        <div class="pos-center-align">Discount Global</div>
+			    <table>
+		            <t t-if="order.get_has_discount() and order.get_percent_discount() > 0">
+			            <tr>
+			                <td>Diskon (%):</td>
+			                <td class="pos-right-align">
+			                    <t t-esc="order.get_percent_discount()"/> %
+			                </td>
+			            </tr>
+		            </t>
+	            </table>
+	            <div class="pos-center-align">--------------------------------</div>
+            </t>
+		</t>
+	</t>
+</templates>

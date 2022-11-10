@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="pos_discount_customer_view_form" model="ir.ui.view">
+            <field name="name">pos.discount_customer.view.form</field>
+            <field name="model">pos.discount_customer</field>
+            <field name="arch" type="xml">
+                <form string="POS Discount Customer">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="status" />
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="discount_type" />
+                                <field name="discount_value" />
+                            </group>
+                            <group>
+                                <field name="partner_ids" widget="many2many_tags"  options="{'no_create_edit': True, 'no_quick_create': True}"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_pos_discount_customer_tree" model="ir.ui.view">
+            <field name="name">POS Discount Customer</field>
+            <field name="model">pos.discount_customer</field>
+            <field name="arch" type="xml">
+                <tree string="Card Reader">
+                    <field name="name"/>
+                    <field name="discount_type"/>
+                    <field name="discount_value"/>
+                    <field name="status" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_configuration_pos_discount_customer" model="ir.actions.act_window">
+            <field name="name">POS Discount Customer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.discount_customer</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create POS Discount Customer.
+              </p>
+            </field>
+        </record>
+
+        <menuitem parent="ti_pos_retail.menu_retail" 
+                  action="ti_pos_retail.action_configuration_pos_discount_customer" 
+                  id="menu_pos_pos_discount_customer" 
+                  sequence="100"
+        />
+    
+    </data>
+</odoo>

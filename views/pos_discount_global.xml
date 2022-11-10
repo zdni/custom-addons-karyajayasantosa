@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="pos_discount_global_form">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="ti_pos_retail.pos_retail_config"/>
+        <field name="arch" type="xml">
+            <group name="discount_product_form" position="after">
+                <group name="discount_global" string="Discount Global">
+                <group>
+                    <field name="enable_pos_discount_global"/>
+                </group>
+                <group>
+                    <field name="min_order_disc_global" 
+                        attrs="{'invisible': [('enable_pos_discount_global', '=', False)], 'required': [('enable_pos_discount_global', '=', True)]}"
+                        options="{'no_create':True}"/>
+                </group>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>

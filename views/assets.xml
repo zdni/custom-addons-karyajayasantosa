@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="ti_pos_retail_assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <!-- <script type="text/javascript" src="/ti_pos_retail/static/src/js/database.js"></script> -->
+                <script type="text/javascript" src="/ti_pos_retail/static/src/js/db.js"></script>
+                <script type="text/javascript" src="/ti_pos_retail/static/src/js/models.js"></script>
+                <script type="text/javascript" src="/ti_pos_retail/static/src/js/order.js"></script>
+                <script type="text/javascript" src="/ti_pos_retail/static/src/js/pos_discount_template.js"></script>
+                <script type="text/javascript" src="/ti_pos_retail/static/src/js/pos_discount_customer.js"></script>
+                <script type="text/javascript" src="/ti_pos_retail/static/src/js/pos_global_discount.js"></script>
+                <script type="text/javascript" src="/ti_pos_retail/static/src/js/pos_promotion.js"></script>
+                <script type="text/javascript" src="/ti_pos_retail/static/src/js/screen_order_widget.js"></script>
+                
+                <link type="text/css" rel="stylesheet" href="/ti_pos_retail/static/src/css/core.css"/>
+                <link type="text/css" rel="stylesheet" href="/ti_pos_retail/static/src/css/discount_template.css"/>
+            </xpath>
+        </template>
+    </data>
+</odoo>

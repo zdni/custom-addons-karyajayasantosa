@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="pos_retail_config">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <group name="features" position="after">
+                <group name="discount_product_form" string="Discount Product">
+                    <field name="disc_product_id" />
+                </group>
+            </group>
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="POS Promotion">
+                        <group string="Promotion">
+                            <field name="promotion_manual_select"/>
+                            <field name="promotion_ids" widget="many2many_tags"/>
+                        </group>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

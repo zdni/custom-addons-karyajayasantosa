@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_turnover_by_city"
+                string="Laporan Omzet per Kota"
+                model="report.turnover.city"
+                report_type="qweb-pdf"
+                file="report_turnover_by_city.temp_report_turnover_by_city"
+                name="report_turnover_by_city.temp_report_turnover_by_city"
+        />
+    </data>
+</odoo>

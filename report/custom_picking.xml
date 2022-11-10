@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="custom_picking" inherit_id="stock.report_picking">
+            <xpath expr="//h1[@class='mt0']" position="attributes">
+                <attribute name="style">color: #05A9EE;</attribute>
+            </xpath>
+
+            <xpath expr="//table[@class='table table-condensed'][1]" position="attributes">
+                <attribute name="class">table table-condensed table-striped</attribute>
+            </xpath>
+            <xpath expr="//table[@class='table table-condensed'][last()]" position="attributes">
+                <attribute name="class">table table-condensed table-striped</attribute>
+                <attribute name="style">page-break-after: always;</attribute>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>

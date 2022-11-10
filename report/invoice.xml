@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="invoice_sign" inherit_id="account.report_invoice_document">
+            <xpath expr="//table[@class='table table-condensed'][1]" position="attributes">
+                <attribute name="class">table table-condensed table-striped</attribute>
+            </xpath>
+
+            <xpath expr="//table[@class='table table-condensed'][last()]//tr[@class='border-black']" position="attributes">
+                <attribute name="class">{}</attribute>
+            </xpath>
+            
+            <xpath expr="//table[@class='table table-condensed'][last()]//tr[@class='border-black'][last()]" position="attributes">
+                <attribute name="style">color: #05A9EE;</attribute>
+            </xpath>
+
+            <xpath expr="//p[@t-if='o.payment_term_id']" position="after">
+                <div style="page-break-after: always;"></div>
+            </xpath>
+            
+            <xpath expr="//div[@class='row'][last()]" position="after">
+                <div class="container" style="margin-bottom: 10px;">
+                    <p><b>Terbilang: </b></p>
+                    <div t-field="o.terbilang"></div>
+                </div>
+                <br/><br/>
+                <table class="table text-center">
+                    <tr>
+                        <td><b>Dibuat Oleh</b></td>
+                        <td><b>Yang Menerima</b></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 2.5cm;">
+                            <u><b>........................</b></u>
+                        </td>
+                        <td style="padding-top: 2.5cm;">
+                            <u><b>........................</b></u>
+                        </td>
+                    </tr>
+                </table>
+            </xpath>
+
+        </template>
+
+    </data>
+</openerp>

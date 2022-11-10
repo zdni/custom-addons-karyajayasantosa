@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="custom_report_external_layout" inherit_id="report.external_layout">
+        
+            <xpath expr="//t[@t-call='report.external_layout_footer']" position="replace">
+                <div class="footer">
+                    <div class="text-center">
+                        <ul t-if="not company.custom_footer" class="list-inline" style="border-top: 1px solid #05A9EE; border-bottom: 1px solid #05A9EE; color: #05A9EE; padding: 3px 0px;">
+                            <!-- <t t-set="company" t-value="company.sudo()"/> -->
+                            <li t-if="company.phone">
+                                <img style="margin-right: 5px; margin-top: -5px;" src="/custom_report/static/src/icon/phone-call.svg" alt="" width="13px"/><span t-field="company.phone"/>
+                            </li>
+                            <li t-if="company.fax">
+                                <img style="margin-right: 5px; margin-top: -5px;" src="/custom_report/static/src/icon/fax.svg" alt="" width="13px"/><span t-field="company.fax"/>
+                            </li>
+                            <li t-if="company.email">
+                                <img style="margin-right: 5px; margin-top: -5px;" src="/custom_report/static/src/icon/arroba.svg" alt="" width="13px"/><span t-field="company.email"/>
+                            </li>
+                            <li t-if="company.website">
+                                <img style="margin-right: 5px; margin-top: -5px;" src="/custom_report/static/src/icon/globe.svg" alt="" width="13px"/><span t-field="company.website"/>
+                            </li>
+                            <li t-if="company.vat">
+                                <img style="margin-right: 5px; margin-top: -5px;" src="/custom_report/static/src/icon/hotel.svg" alt="" width="13px"/><span t-field="company.vat"/>
+                            </li>
+                        </ul>
+
+                        <t t-if="company.custom_footer">
+                            <span t-raw="company.rml_footer"/>
+                        </t>
+
+                        <ul class="list-inline" style="color: #393e46;">
+                            <li>Page:</li>
+                            <li><span class="page"/></li>
+                            <li>of</li>
+                            <li><span class="topage"/></li>
+                        </ul>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>

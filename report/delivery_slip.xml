@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="deliveryslip_sign" inherit_id="stock.report_delivery_document">
+            <xpath expr="//table[@class='table table-condensed']" position="attributes">
+                <attribute name="class">table table-condensed table-striped</attribute>
+            </xpath>
+            <xpath expr="//table[@class='table table-condensed mt48'][last()]" position="attributes">
+                <attribute name="class">table table-condensed mt48 table-striped</attribute>
+            </xpath>
+
+            <xpath expr="//p[last()]" position="after">
+                <br/><br/>
+                <table class="table text-center" style="page-break-after: always;">
+                    <tr>
+                        <td><b>Dibuat Oleh</b></td>
+                        <td><b>Yang Menerima</b></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 2.5cm;">
+                            <u><b>........................</b></u>
+                        </td>
+                        <td style="padding-top: 2.5cm;">
+                            <u><b>........................</b></u>
+                        </td>
+                    </tr>
+                </table>
+            </xpath>
+
+        </template>
+
+    </data>
+</openerp>

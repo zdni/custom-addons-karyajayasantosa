@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="custom_barcode" inherit_id="stock.external_layout_header_barcode_right">
+            <xpath expr="//div[@class='col-xs-4 pull-right mt8']" position="attributes">
+                <attribute name="class">mt8</attribute>
+                <attribute name="style">margin-left: -40px</attribute>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>

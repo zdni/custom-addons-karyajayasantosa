@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="bg_report" inherit_id="report.minimal_layout">
+
+            <xpath expr="//body[@class='container']" position="attributes">
+                <attribute name="style">
+                    background-image: url('/custom_report/static/src/img/bg_report.png'); 
+                    background-position:0px 200px; 
+                    background-repeat:no-repeat;
+                </attribute>
+            </xpath>
+            
+        </template>
+
+    </data>
+</openerp>

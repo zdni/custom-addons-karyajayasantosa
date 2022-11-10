@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report 
+            id="report_inventory_with_price_menu"
+            string="Inventory with Price"
+            model="stock.inventory" 
+            report_type="qweb-pdf"
+            file="stock.inventory" 
+            name="custom_report_internal.report_inventory_with_price" 
+        />
+
+        <template id="report_inventory_with_price">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <h2>Stock Inventory</h2>
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><strong>Inventory</strong></th>
+                                        <th><strong>Date</strong></th>
+                                        <th><strong>Location</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span t-field="o.name"/></td>
+                                        <td><span t-field="o.date"/></td>
+                                        <td><span t-field="o.location_id"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><strong>Product</strong></th>
+                                        <th class="text-center"><strong>Quantity</strong></th>
+                                        <th class="text-right"><strong>Price</strong></th>
+                                    </tr>
+                                </thead>
+                                    <tr t-foreach="o.line_ids" t-as="line">
+                                        <td><span t-field="line.product_id"/></td>
+                                        <td class="text-center"><span t-field="line.product_qty"/> <span t-field="line.product_uom_id" groups="product.group_uom"/></td>
+                                        <t t-if="line.product_id.canvas_price > 0">
+                                            <td class="text-right"><span t-field="line.product_id.canvas_price"/></td>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="text-right"><span t-field="line.product_id.lst_price"/></td>
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <td/>
+                                    </tr>
+                            </table>
+                            <t t-if="o.filter == 'product' and o.product_id">
+                                <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                        <table class="table table-condensed">
+                                        <tr class="border-black">
+                                            <td><strong>Total Quantity</strong></td>
+                                            <td class="text-right">
+                                                <span t-field="o.total_qty"/> <span t-field="o.product_id.uom_id"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>

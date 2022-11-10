@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="assets_common" inherit_id="report.assets_common">
+
+            <xpath expr="." position="inside">
+                <link href="/custom_report_internal/static/src/css/custom_style.css" rel="stylesheet"/>
+            </xpath>
+
+        </template>
+
+    </data>
+</openerp>

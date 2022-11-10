@@ -1,0 +1,17 @@
+h2 {
+    color: #05A9EE;
+}
+th {
+    font-weight: bold;
+    color: #05A9EE;
+}
+thead {
+    border: none;
+}
+.table-striped > tbody > tr:nth-child(2n+1) > td {
+    background-color: #eeeeee;
+    /* background-color: #ced8d9; */
+}
+table.table.table-condensed thead tr:first-child th{
+    border-bottom: none !important;
+}

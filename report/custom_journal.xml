@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="custom_journal" inherit_id="account.report_journal">
+            
+            <xpath expr="//t[@t-set='data_report_margin_top']" position="replace">
+                <t t-set="data_report_margin_top" t-value="25"/>
+            </xpath>
+            <xpath expr="//t[@t-set='data_report_header_spacing']" position="replace">
+                <t t-set="data_report_header_spacing" t-value="23"/>
+            </xpath>
+            <xpath expr="//h2" position="attributes">
+                <attribute name="style">font-size: 32px; text-align: center; padding-top: 10px;</attribute>
+            </xpath>
+            <xpath expr="//table[@class='table table-condensed']" position="attributes">
+                <attribute name="class">table table-condensed table-striped</attribute>
+            </xpath>
+            <xpath expr="//table[@class='table table-condensed'][last()]" position="attributes">
+                <attribute name="class">table table-condensed table-striped</attribute>
+            </xpath>
+            <xpath expr="//div[@class='row'][last()]" position="attributes">
+                <attribute name="style">page-break-after: always;</attribute>
+            </xpath>
+
+        </template>
+
+    </data>
+</openerp>

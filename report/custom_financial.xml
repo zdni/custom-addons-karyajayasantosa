@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="custom_financial" inherit_id="account.report_financial">
+            
+            <xpath expr="//h2" position="attributes">
+                <attribute name="style">font-size: 32px; text-align: center;</attribute>
+            </xpath>
+            <xpath expr="//table[@class='table table-condensed'][1]" position="attributes">
+                <attribute name="class">table table-condensed table-striped</attribute>
+            </xpath>
+            <xpath expr="//table[@class='table table-condensed'][last()]" position="attributes">
+                <attribute name="class">table table-condensed table-striped</attribute>
+                <attribute name="style">page-break-after: always; page-break-before: auto;</attribute>
+            </xpath>
+
+        </template>
+
+    </data>
+</openerp>

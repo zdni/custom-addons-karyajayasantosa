@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="custom_header_internal_report" inherit_id="report.internal_layout">
+            <xpath expr="//div[@class='header']" position="replace">
+                <div class="header">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height: 100px; max-width: 100px;"/>                                
+                                </div>
+                                <div class="col-xs-9">
+                                    <p t-field="company.name" style="font-weight: bold; color: #393e46;"></p>
+                                    <span t-field="company.partner_id" t-field-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;], &quot;no_marker&quot;: true}" style=" display: inline-block; margin-top: -10px; color: #393e46;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <ul class="list-inline">
+                                <li><span class="page"/></li>
+                                <li>/</li>
+                                <li><span class="topage"/></li>
+                            </ul>
+                            <p t-field="company.rml_header1" style="font-size: 20px; color: #05A9EE; font-weight: bold;"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div style="margin-top: 5px; border-bottom: 1px solid #EEEEEE"></div>
+                        </div>
+                    </div>
+                    <div name="company_address"></div>
+                </div>
+            </xpath>
+        </template>
+
+    </data>
+</openerp>

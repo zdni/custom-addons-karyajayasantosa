@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="wizard_report_account_receivable" model="ir.ui.view">
+            <field name="name">report.account.receivable.age.form.view</field>
+            <field name="model">report.account.receivable.age</field>
+            <field name="arch" type="xml">
+                <form string="Laporan Umur Piutang">
+
+                    <group>
+                        <group>
+                            <field name="start_age"/>
+                        </group>
+                        <group>
+                            <field name="end_age"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="city_ids" widget="many2many_tags"/>
+                    </group>
+
+                    <footer>
+                        <button name="print_report_account_receivable_age" string="Print Report" class="oe_highlight"
+                                type="object"/>
+                        Or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+
+        <record id="action_report_account_receivable_age" model="ir.actions.act_window">
+            <field name="name">Laporan Umur Piutang</field>
+            <field name="res_model">report.account.receivable.age</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_wizard_report_account_receivable"
+                  name="Laporan Umur Piutang"
+                  action="action_report_account_receivable_age"
+                  parent="account.menu_finance_legal_statement"
+                  sequence="2"/>
+    </data>
+</odoo>
+

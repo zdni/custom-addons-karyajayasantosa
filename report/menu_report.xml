@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="action_report_account_receivable_age"
+                string="Report Account Receivable Age"
+                model="report.account.receivable.age"
+                report_type="qweb-pdf"
+                file="report_account_receivable_age.report_temp"
+                name="report_account_receivable_age.report_temp"
+        />
+    </data>
+</odoo>

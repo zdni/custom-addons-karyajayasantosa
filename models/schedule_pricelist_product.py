@@ -74,7 +74,7 @@ class SchedulePricelistProductLine(models.Model):
 
     # product_ids = fields.Many2many('product.product', string='Product')
     product_id = fields.Many2one('product.product', string='Product', required=True)
-    uom_id = fields.Many2one('product.uom', string='UoM', required=True, readonly=True)
+    uom_id = fields.Many2one('product.uom', string='UoM')
     purchase_price = fields.Float('Purchase Price', required=True)
     selling_price = fields.Float('Selling Price', required=True)
     pricelist_id = fields.Many2one('schedule.pricelist.product', string='Pricelist', ondelete="cascade")

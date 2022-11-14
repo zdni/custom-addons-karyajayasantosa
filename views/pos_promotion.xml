@@ -141,6 +141,7 @@
                                     <field name="quantity"/>
                                     <field name="first_discount"/>
                                     <field name="second_discount"/>
+                                    <field name="third_discount"/>
                                 </tree>
                             </field>
                         </group>

@@ -241,8 +241,7 @@ odoo.define('ti_pos_retail.promotion', function (require) {
             }
         }, {
             model: 'pos.promotion.discount.multiple',
-            // fields: ['promotion_id', 'product_id', 'quantity', 'first_discount', 'second_discount'],
-            fields: ['promotion_id', 'product_ids', 'quantity', 'first_discount', 'second_discount'],
+            fields: ['promotion_id', 'product_ids', 'quantity', 'first_discount', 'second_discount', 'third_discount'],
             condition: function (self) {
                 return self.promotion_ids && self.promotion_ids.length > 0;
             },
@@ -1421,7 +1420,6 @@ odoo.define('ti_pos_retail.promotion', function (require) {
             /* 
                 12. Multiple discount by product
             */
-           console.log( 'promotion: ', promotion )
             var check = this.checking_apply_multiple_discount(promotion);
             if(!check) return;
             
@@ -1480,7 +1478,14 @@ odoo.define('ti_pos_retail.promotion', function (require) {
                         }
                     }
                     if(amount_total_by_product != 0 && promotion_line && promotion_line.promotion_id[0] == promotion.id ) {
-                        let total_discount = -amount_total_by_product * (100*promotion_line.first_discount + 100*promotion_line.second_discount - promotion_line.first_discount*promotion_line.second_discount) / 10000;
+                        const first_discount = promotion_line.first_discount/100;
+                        const second_discount = promotion_line.second_discount/100;
+                        const third_discount = promotion_line.third_discount/100;
+                        
+                        // let total_discount = -amount_total_by_product * (100*promotion_line.first_discount + 100*promotion_line.second_discount - promotion_line.first_discount*promotion_line.second_discount) / 10000;
+                        // let total_discount = -amount_total_by_product * (1-(promotion_line.first_discount/100)) * (1-(promotion_line.second_discount/100)) * (1-(promotion_line.third_discount/100));
+                        let total_discount = -amount_total_by_product * (first_discount + second_discount + third_discount - (first_discount*second_discount) - (first_discount*third_discount) - (second_discount*third_discount) + (first_discount*second_discount*third_discount));
+
                         const promotion_line_product = this.pos.db.get_product_by_id( product_id )
                         this.add_promotion(product, total_discount, 1, {
                             product_get_promo_id: product_id,
@@ -1488,7 +1493,7 @@ odoo.define('ti_pos_retail.promotion', function (require) {
                             promotion_id: promotion_line.id,
                             multiple_discount: true,
                             promotion: true,
-                            promotion_reason: ' multiple discount ' + promotion_line.first_discount +'% + ' + promotion_line.second_discount + '% for ' + promotion_line_product.display_name,
+                            promotion_reason: ' multiple discount ' + promotion_line.first_discount +'% + ' + promotion_line.second_discount + '% + ' + promotion_line.third_discount + '% for ' + promotion_line_product.display_name,
                         });
                     }
                 }

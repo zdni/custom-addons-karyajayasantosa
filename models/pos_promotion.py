@@ -220,4 +220,5 @@ class pos_promotion_discount_multiple(models.Model):
     quantity = fields.Float('Minimum quantity', required=1)
     first_discount = fields.Float('First Discount (%)', required=1)
     second_discount = fields.Float('Second Discount (%)', default=0)
+    third_discount = fields.Float('Third Discount (%)', default=0)
     promotion_id = fields.Many2one('pos.promotion', 'Promotion', required=1, ondelete='cascade')

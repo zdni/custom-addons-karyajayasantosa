@@ -53,18 +53,21 @@ class ProfitPoSReport(models.TransientModel):
                                 if is_return:
                                     find = False
                                     while not find:
-                                        if j < len(order.lines):
-                                            product_id = order.lines[j].product_id.id
-                                            if product_id == line.product_id.id:
-                                                find = True
-                                                move_line = order.picking_id.move_lines[j]
-                                                for quant_line in move_line.quant_ids:
-                                                    hpp_product += quant_line.inventory_value
-                                                hpp_product = hpp_product*-1
-                                            j += 1
+                                        if j >= len(order.lines) or j >= len(order.picking_id.move_lines):
+                                            break
+                                        product_id = order.lines[j].product_id.id
+                                        if product_id == line.product_id.id:
+                                            find = True
+                                            move_line = order.picking_id.move_lines[j]
+                                            for quant_line in move_line.quant_ids:
+                                                hpp_product += quant_line.inventory_value
+                                            hpp_product = hpp_product*-1
+                                        j += 1
                                 else:
                                     find = False
                                     while not find:
+                                        if index > len(transaction.picking_id.move_lines):
+                                            break
                                         if transaction.picking_id.move_lines[index].product_id.id != line.product_id.id:
                                             index += 1
                                         else:

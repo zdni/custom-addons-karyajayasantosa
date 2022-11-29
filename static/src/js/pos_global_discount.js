@@ -83,7 +83,31 @@ odoo.define('pos_global_discount.global_discount', function (require) {
         button_click: function() {
 			var order = this.pos.get_order();
             if(order.get_orderlines().length) {
-                this.gui.show_popup('pos_global_discount');
+                if( this.pos.config.lock_discount == true ) {
+                    this.gui.show_popup('password', {
+                        'title': _t('Password ?'),
+                        confirm: function (pw) {
+                            const string_pin = this.pos.config.string_pin
+                            const array_string_pin = string_pin.split('|')
+                            
+                            let access_accept = false
+                            array_string_pin.forEach(pin => {
+                                if( pin.slice(2) == pw.toString() ) { access_accept = true }
+                            });
+
+                            if ( !access_accept ) {
+                                this.gui.show_popup('error', {
+                                    'title': _t('Error'),
+                                    'body': _t('Incorrect password. Please try again'),
+                                });
+                            } else {
+                                return this.gui.show_popup('pos_global_discount');
+                            }
+                        },
+                    });
+                } else {
+                    return this.gui.show_popup('pos_global_discount');
+                }
             }
         }
     });
@@ -116,6 +140,22 @@ odoo.define('pos_global_discount.global_discount', function (require) {
         },
         export_as_JSON: function() {
             var order = _super_order.export_as_JSON.call(this);
+            var _order = this.pos.get_order();
+            if( _order ) {
+                var orderlines = _order.get_orderlines();
+                if( orderlines ) {
+                    for (let index = 0; index < orderlines.length; index++) {
+                        const orderline = orderlines[index];
+                        if( orderline.get_product().display_name == this.pos.config.discount_global_product_id[1] ) {
+                            var discount = orderline.get_price_without_tax();
+                            var total = _order.get_total_without_tax() - discount;
+                            var percent_discount = (discount*-100)/total
+                            this.set_percent_discount( percent_discount );
+                            this.set_has_discount( true );
+                        }
+                    }
+                }
+            }
             var new_val = {
                 percent_discount: this.get_percent_discount(),
                 has_discount: this.get_has_discount(),
@@ -126,6 +166,23 @@ odoo.define('pos_global_discount.global_discount', function (require) {
         },
         export_for_printing: function() {
             var receipt = _super_order.export_for_printing.call(this);
+            var _order = this.pos.get_order();
+            if( _order ) {
+                var orderlines = _order.get_orderlines();
+                if( orderlines ) {
+                    for (let index = 0; index < orderlines.length; index++) {
+                        const orderline = orderlines[index];
+                        if( orderline.get_product().display_name == this.pos.config.discount_global_product_id[1] ) {
+                            var discount = orderline.get_price_without_tax();
+                            var total = _order.get_total_without_tax() - discount;
+                            var percent_discount = (discount*-100)/total
+                            this.set_percent_discount( percent_discount );
+                            console.log( 'discount', discount )
+                            this.set_has_discount( true );
+                        }
+                    }
+                }
+            }
             var new_val = {
                 percent_discount: this.get_percent_discount(),
                 has_discount: this.get_has_discount(),

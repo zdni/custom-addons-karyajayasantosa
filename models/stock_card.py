@@ -21,6 +21,9 @@ class StockCard(models.Model):
 
     @api.model
     def stock_card(self, product_id):
+        product = self.env['product.product'].search([ ('id', '=', product_id) ])
+        product_uom = product.uom_id
+
         # mengambil seluruh stock move untuk product
         moves = self.env['stock.move'].search([
             ("product_id.id", "=", product_id),
@@ -80,7 +83,8 @@ class StockCard(models.Model):
                     if move.location_dest_id.location_id.name in warehouses_lost:
                         information = "Stok Opname"
                 
-                qty_out = move.product_uom_qty
+                value = self.convert_uom( product_uom, move.product_uom, move.product_uom_qty )
+                qty_out = value
                 qty_in = 0
                 qty_balance = qty_start + (qty_in -  qty_out)
                 self.create_stock_card({ 
@@ -118,7 +122,8 @@ class StockCard(models.Model):
                 else:
                     information = "Stok Opname"
                 
-                qty_in = move.product_uom_qty
+                value = self.convert_uom( product_uom, move.product_uom, move.product_uom_qty )
+                qty_in = value
                 qty_out = 0
                 qty_balance = qty_start + (qty_in -  qty_out)
                 self.create_stock_card({ 
@@ -131,3 +136,17 @@ class StockCard(models.Model):
     def create_stock_card( self, vals ):
         res = super(StockCard, self).create(vals)
         return res
+
+    def convert_uom(self, init, to, value):
+        if to.uom_type == 'bigger':
+            value = value*to.factor_inv
+        if to.uom_type == 'smaller':
+            value = value/to.factor
+        
+        if init.uom_type == 'bigger':
+            value = value/init.factor_inv
+        if init.uom_type == 'smaller':
+            value = value*init.factor
+        
+        _logger.warning( value )
+        return value

@@ -14,7 +14,6 @@ class SchedulePricelistProduct(models.Model):
 
     name = fields.Char('Name', required=True)
     start_date = fields.Datetime('Start Date', required=True)
-    end_date = fields.Datetime('End Date', required=True)
     line_ids = fields.One2many('schedule.pricelist.product.line', 'pricelist_id', string='Product Line')
     # is_running = fields.Boolean('Is Running', default=False)
     state = fields.Selection([

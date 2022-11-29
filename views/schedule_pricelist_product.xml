@@ -20,9 +20,6 @@
                         <group>
                             <field name="start_date" />
                         </group>
-                        <group>
-                            <field name="end_date" />
-                        </group>
                     </group>
                     <notebook>
                         <page name="product" string="Product">
@@ -62,7 +59,6 @@
             <tree string="Schedule Pricelist Product">
                 <field name="name" />
                 <field name="start_date" />
-                <field name="end_date" />
                 <field name="state" />
             </tree>
         </field>

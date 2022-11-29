@@ -66,7 +66,7 @@ class ProfitPoSReport(models.TransientModel):
                                 else:
                                     find = False
                                     while not find:
-                                        if index > len(transaction.picking_id.move_lines):
+                                        if index >= len(transaction.picking_id.move_lines):
                                             break
                                         if transaction.picking_id.move_lines[index].product_id.id != line.product_id.id:
                                             index += 1
@@ -114,24 +114,25 @@ class ProfitPoSReport(models.TransientModel):
                     total_hpp_transaction += hpp_transaction
 
             hpp_session = total_hpp_transaction
-
-            temp.append(session.name) #0
-            temp.append(session.user_id.name) #1
-            temp.append(session.stop_at) #2session.statement_ids
-            temp.append(hpp_session) #3
-            temp.append(temp_trans) #4
-            temp.append(self.type_report)
             
-            total_trans = 0
-            statements = {}
-            for statement in session.statement_ids:
-                statements[statement.journal_id.name] = statement.total_entry_encoding
-                total_trans += statement.total_entry_encoding
-            
-            temp.append( statements )
-            temp.append(total_trans)
-            
-            session_data.append(temp)
+            if len(temp_trans):
+                temp.append(session.name) #0
+                temp.append(session.user_id.name) #1
+                temp.append(session.stop_at) #2session.statement_ids
+                temp.append(hpp_session) #3
+                temp.append(temp_trans) #4
+                temp.append(self.type_report)
+                
+                total_trans = 0
+                statements = {}
+                for statement in session.statement_ids:
+                    statements[statement.journal_id.name] = statement.total_entry_encoding
+                    total_trans += statement.total_entry_encoding
+                
+                temp.append( statements )
+                temp.append(total_trans)
+                
+                session_data.append(temp)
 
         datas = {
             'ids': self.ids,

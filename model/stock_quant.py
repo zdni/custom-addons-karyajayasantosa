@@ -21,14 +21,21 @@ class Quant(models.Model):
                 picking_name = hist_id.picking_id.name
                 qty = hist_id.product_uom_qty
                 
+                uom = hist_id.product_uom
+                if uom.uom_type == 'smaller':
+                    qty = qty/uom.factor
+                if uom.uom_type == 'bigger':
+                    qty = qty*uom.factor_inv
+                
                 line = self.env['stock.valuation.adjustment.lines'].search([
                     ('product_id.id', '=', record.product_id.id),
                     ('quantity', '=', qty),
                     ('cost_id.picking_ids.name', '=', picking_name)
                 ], limit=1)
                 if line:
-                    total_ship_cost += (line.additional_landed_cost/line.quantity)
-                    # total_ship_cost += line.additional_landed_cost_per_unit
+                    if line.quantity > 0:
+                        total_ship_cost += (line.additional_landed_cost/line.quantity)
+                        # total_ship_cost += line.additional_landed_cost_per_unit
                 
                 else:
                     line = self.env['custom.valuation.adjustment.lines'].search([
@@ -36,7 +43,9 @@ class Quant(models.Model):
                         ('quantity', '=', qty),
                         ('cost_id.picking_ids.name', '=', picking_name)
                     ], limit=1)
-                    total_ship_cost += line.additional_landed_cost_per_unit
+                    if line.quantity > 0:
+                        total_ship_cost += (line.additional_landed_cost/line.quantity)
+                        # total_ship_cost += line.additional_landed_cost_per_unit
 
             total_cost = (record.inventory_value/record.qty)-total_ship_cost
 

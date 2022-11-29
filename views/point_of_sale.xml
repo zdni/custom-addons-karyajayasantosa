@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="pos_session_z_report_form">
+        <field name="name">pos.session.form.view.inherit</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Z Report" states="closed" icon="fa-print" type="object" name="print_z_report" custom="print_z_report"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

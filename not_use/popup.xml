@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="POSSessionClosePopup">
+        <div class="modal-dialog">
+            <div class="popup popup-close-session-pos">
+            	<p class="title">Akhiri Sesi POS</p>
+                <div class="close-session-pos-container">
+                    <h3>
+                        Yakin ingin mengakhiri sesi POS ini?
+                    </h3>
+                </div>
+                <div class="footer">
+                    <div class="button close-pos-session">
+                        <i class="fas fa-power-off"></i>
+                        Akhiri Sesi POS
+                    </div>
+                    <div class="button close-popup-btn">
+                        Batal
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+    <t t-name="CashControlWizardPopup">
+        <div class="modal-dialog">
+            <div class="popup popup-cash-control-pos" style="height: 80%; width: 80%;">
+            	<p class="title">Cash Control POS</p>
+                <div style="max-height: 250px !important; overflow: auto;">
+                    <table id="cashbox_data_table">
+                        <thead>
+                            <tr>
+                                <th>Coin/Bill Value</th>
+                                <th>Number of Coins/Bills</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <div id="add_close_balance" style="width:100%;">
+                        <div style="position: fixed;top: 55%;float:left">
+                            <button id="add_new_item">Add New Item</button>
+                        </div>
+                        <div style="position: fixed;top: 53%;float:right;margin-left:30%;">
+                            <h5>Subtotal :<span class="subtotal_end" style="margin-left: 10px;"></span></h5>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div id="cash_details" style="position:fixed; top:60%;width:50%;">
+                    <table width="100%">
+                        <tr align="right">
+                            <td width="30%"><label>Opening Balance: </label></td>
+                            <td width="20%"><span id="open_bal">0.00</span></td>
+                            <td width="30%"><label>Real Closing Balance: </label></td>
+                            <td width="20%"><span id="real_close_bal">0.00</span></td>
+                        </tr>
+                        <tr align="right">
+                            <td width="30%"><label>+ Transactions: </label></td>
+                            <td width="20%"><span id="transaction">0.00</span></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr align="right">
+                            <td width="30%"><label>= Theoretical Closing Balance: </label></td>
+                            <td width="20%"><span id="theo_close_bal">0.00</span></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr style="border-top: 2px solid ! important;" align="right">
+                            <td></td>
+                            <td></td>
+                            <td width="30%"><label>Difference: </label></td>
+                            <td width="20%"><span id="differ">0.00</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <br/>
+                <div class="footer">
+                    <div class="button close_session" style="width: 130px;">
+                        Akhiri Sesi
+                    </div>
+                    <div class="button ok">
+                        Validasi
+                    </div>
+                    <div class="button cancel">
+                        Batal
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </t>
+
+    
+    
+</templates>

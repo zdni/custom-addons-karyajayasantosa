@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!-- <t t-extend="ProductCategoriesWidget">
+        <t t-jquery="div.searchbox" t-operation="after">
+            <i id="close-session-pos-button" class="fa fa-power-off" aria-hidden="true" style="font-size: 26px;position: absolute;right: 220px;top:10px; cursor: pointer;"></i>
+    	</t>
+    </t> -->
+
+    <t t-name="ZReportReceipt">
+        <receipt align='center' width='33' value-thousands-separator='.' >
+            <div>
+                <pre size='double-height'><t t-esc='receipt.company.name' /></pre>
+                Jl. Piere Tendean No. 146<br />Kendari<br />
+                <t t-esc='receipt.company.phone' />><br />
+            </div>
+            <div>---------------------------------</div>
+            <br />
+            
+            <div>
+                <b>LAPORAN PENJUALAN KASIR</b>
+            </div>
+            <div>--------------------------------</div>
+            <div>
+                SESI <t t-esc='receipt.pos.name' />
+            </div>
+            <br />
+            <line>
+                <left>Kasir</left>
+                <right><t t-esc='receipt.cashier' /></right>
+            </line>
+            <line>
+                <left>Status Sesi</left>
+                <right><t t-esc='receipt.pos.state' /></right>
+            </line>
+            <line>
+                <left>Waktu Mulai</left>
+                <right><t t-esc='receipt.pos.start_at' /></right>
+            </line>
+            <line>
+                <left>Waktu Selesai</left>
+                <right><t t-esc='receipt.pos.stop_at' /></right>
+            </line>
+
+            <br /><br />
+            
+            <line>
+                <left>Saldo Awal</left>
+                <right><t t-esc="widget.format_currency_no_symbol(receipt.pos.cash.register_balance_start)"/></right>
+            </line>
+            <line>
+                <left>Jml. Transaksi</left>
+                <right><t t-esc="receipt.transactions.orders.amount"/></right>
+            </line>
+            <line>
+                <left>Total Transaksi</left>
+                <right><t t-esc="widget.format_currency_no_symbol(receipt.transactions.orders.total)"/></right>
+            </line>
+            <line>
+                <left>Jml. Return</left>
+                <right><t t-esc="receipt.transactions.returns.amount"/></right>
+            </line>
+            <line>
+                <left>Tot. Return</left>
+                <right><t t-esc="widget.format_currency_no_symbol(receipt.transactions.returns.total)"/></right>
+            </line>
+            <line>
+                <left>Total</left>
+                <right><t t-esc="widget.format_currency_no_symbol(receipt.transactions.total)"/></right>
+            </line>
+            <line>
+                <left>Tot. Potongan</left>
+                <right><t t-esc="widget.format_currency_no_symbol(receipt.transactions.orders.total_saving)"/></right>
+            </line>
+            <line>
+                <left>Saldo Akhir</left>
+                <right><t t-esc="widget.format_currency_no_symbol(receipt.pos.cash.register_balance_end_real)"/></right>
+            </line>
+            <br />
+
+            <div>--------------------------------</div>
+            <div>Metode Pembayaran</div>
+            <line>
+                <left>Metode</left>
+                <right>Tot. Transaksi</right>
+            </line>
+            <t t-foreach="receipt.journals" t-as="journal">
+                <line>
+                    <left><t t-esc="journal.name"/></left>
+                    <right><t t-esc="widget.format_currency_no_symbol(journal.total_transaction)"/></right>
+                </line>
+            </t>
+            <br />
+
+            <div>--------------------------------</div>
+            <div>
+                Waktu Cetak: <t t-esc='receipt.date' />
+            </div>
+        </receipt>
+    </t>
+    
+</templates>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- <template id="pos_z_report_assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_z_report/static/src/js/pos.js"></script>
+                <script type="text/javascript" src="/pos_z_report/static/src/js/popup.js"></script>
+                
+                <link type="text/css" rel="stylesheet" href="/pos_z_report/static/src/css/pos.css"/>
+            </xpath>
+        </template> -->
+
+        <template id="assets_backend" inherit_id="web.assets_backend" name="pos_z_report_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_z_report/static/src/js/print.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

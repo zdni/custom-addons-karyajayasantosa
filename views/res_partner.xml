@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record id="res_partner_action_server" model="ir.actions.server">
+            <field name="name">Automatic Member Card</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="binding_model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">
+                for record in records:
+                    record.action_server_member_card()
+            </field>
+        </record>
+    
+    </data>
+</odoo>

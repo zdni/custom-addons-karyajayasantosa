@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="member_card">
+            <strong t-field="partner.name" />
+            <div style="width: 489px; height: 280px; background-image: url('/member_card/static/images/front.jpg'); background-position: center; background-repeat: no-repeat; background-size: cover; position: relative;">
+                <div style="position: relative; top: 212px; left: 250px; font-size: 34px;">
+                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', partner.card_number_lyt, 600, 150)" style="width:200px;height:40px;"/>
+                </div>
+            </div>
+            <br />
+            <div style="width: 489px; height: 280px; background-image: url('/member_card/static/images/back.jpg'); background-position: center; background-repeat: no-repeat; background-size: cover;"></div>
+        </template>
+
+        <template id="report_member_card">
+            <div class="page">
+                <t t-foreach="docs" t-as="partner">
+                    <t t-call="member_card.member_card">
+                        <t t-set="partner" t-value="partner"/>
+                    </t>
+                </t>
+            </div>
+        </template>
+
+        <report 
+            id="action_report_member_card"
+            string="Member Card"
+            model="res.partner"
+            report_type="qweb-pdf"
+            name="member_card.report_member_card"
+            file="member_card.report_member_card"
+        />
+
+    </data>
+</odoo>

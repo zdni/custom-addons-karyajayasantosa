@@ -52,6 +52,23 @@
                 <left>Jml. Transaksi</left>
                 <right><t t-esc="receipt.transactions.orders.amount"/></right>
             </line>
+            <br />
+
+            <div>--------------------------------</div>
+            <div>Metode Pembayaran</div>
+            <line>
+                <left>Metode</left>
+                <right>Tot. Transaksi</right>
+            </line>
+            <t t-foreach="receipt.journals" t-as="journal">
+                <line>
+                    <left><t t-esc="journal.name"/></left>
+                    <right><t t-esc="widget.format_currency_no_symbol(journal.total_transaction)"/></right>
+                </line>
+            </t>
+            <br />
+
+            <div>--------------------------------</div>
             <line>
                 <left>Total Transaksi</left>
                 <right><t t-esc="widget.format_currency_no_symbol(receipt.transactions.orders.total)"/></right>
@@ -76,20 +93,6 @@
                 <left>Saldo Akhir</left>
                 <right><t t-esc="widget.format_currency_no_symbol(receipt.pos.cash.register_balance_end_real)"/></right>
             </line>
-            <br />
-
-            <div>--------------------------------</div>
-            <div>Metode Pembayaran</div>
-            <line>
-                <left>Metode</left>
-                <right>Tot. Transaksi</right>
-            </line>
-            <t t-foreach="receipt.journals" t-as="journal">
-                <line>
-                    <left><t t-esc="journal.name"/></left>
-                    <right><t t-esc="widget.format_currency_no_symbol(journal.total_transaction)"/></right>
-                </line>
-            </t>
             <br />
 
             <div>--------------------------------</div>

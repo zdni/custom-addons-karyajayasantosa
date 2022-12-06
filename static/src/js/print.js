@@ -130,6 +130,9 @@ odoo.define('pos_z_report.print', function(require){
                     } );
                 if( transactions.orders == null ) return alert('Error: Missing data Order');
 
+                var pos_start_at = this.add_hours( pos.start_at, new Date( pos.start_at ), 8 );
+                var pos_stop_at = this.add_hours( pos.stop_at, new Date( pos.stop_at ), 8 );
+
                 var receipt = {
                     cashier: user ? user.name : null,
                     company: company,
@@ -144,9 +147,9 @@ odoo.define('pos_z_report.print', function(require){
                             register_total_entry_encoding: pos.cash_register_total_entry_encoding,
                         },
                         name: pos.display_name,
-                        start_at: pos.start_at,
+                        start_at: pos_start_at,
                         state: state[pos.state],
-                        stop_at: pos.stop_at,
+                        stop_at: pos_stop_at,
                     },
                     transactions: transactions,
                 }
@@ -176,6 +179,14 @@ odoo.define('pos_z_report.print', function(require){
             else{
                 this._super();
             }  
+        },
+        add_hours: function(string_date, date, hours) {
+            date.setHours( date.getHours() + hours );
+            var hour = (date.getHours() >= 10) ? date.getHours() : `0${date.getHours()}`;
+            var minute = (date.getMinutes() >= 10) ? date.getMinutes() : `0${date.getMinutes()}`;
+            var second = (date.getSeconds() >= 10) ? date.getSeconds() : `0${date.getSeconds()}`;
+
+            return `${string_date.slice(0,10)}` + ' ' + `${hour}:${minute}:${second}`;
         },
         message: function(connection, name, params) {
             return connection.rpc('/hw_proxy/' + name, params || {});

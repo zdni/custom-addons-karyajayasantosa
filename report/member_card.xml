@@ -3,13 +3,15 @@
     <data>
 
         <template id="member_card">
-            <strong t-field="partner.name" style="display: block;"/>
-            <div style="width: 322px; height: 208px; background-image: url('/member_card/static/images/front.jpg'); background-position: center; background-repeat: no-repeat; background-size: 100% 100%; position: relative; margin-bottom: 10px;">
-                <div style="position: relative; top: 158px; left: 170px; display: inline-block;">
-                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', partner.card_number_lyt, 600, 150)" style="height:30px;"/>
+            <div style="width: 394px; height: 249px; background-image: url('/member_card/static/images/front.jpg'); background-position: center; background-repeat: no-repeat; background-size: 100% 100%; position: relative; margin-bottom: 10px;">
+                <div style="position: relative; top: 189px; left: 210px; display: inline-block;">
+                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', partner.card_number_lyt, 600, 150)" style="height:35px;"/>
+                </div>
+                <div style="position: relative; top: 220px; left: 52px; display: inline-block;">
+                    <strong t-field="partner.name" style="color: white;"/>
                 </div>
             </div>
-            <div style="width: 322px; height: 208px; background-image: url('/member_card/static/images/back.jpg'); background-position: center; background-repeat: no-repeat; background-size: 100% 100%;"/>
+            <div style="width: 394px; height: 249px; background-image: url('/member_card/static/images/back.jpg'); background-position: center; background-repeat: no-repeat; background-size: 100% 100%; margin-bottom: 20px;"/>
         </template>
 
         <template id="report_member_card">

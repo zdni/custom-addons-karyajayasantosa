@@ -31,7 +31,7 @@ class AccountPayment(models.Model):
     def _redeem_status(self):
         for rec in self:
             for invoice in rec.invoice_ids:
-                name = rec.invoice_ids.origin
+                name = rec.invoice_ids[0].origin
                 sale_order = self.env['sale.order'].search([
                     ('name', '=', name)
                 ], limit=1)
@@ -49,7 +49,7 @@ class AccountPayment(models.Model):
                     rec.redeem_status = False
                     rec.is_get_loyalty_point = False
 
-                partner = rec.invoice_ids.partner_id
+                partner = rec.invoice_ids[0].partner_id
                 if partner:
                     rec.total_points = partner.total_remaining_points
         
@@ -57,7 +57,7 @@ class AccountPayment(models.Model):
     @api.onchange('amount', 'redeem_amount')
     def _check_available_payment(self):
         for rec in self:
-            if rec.amount + rec.redeem_amount > rec.invoice_ids.residual:
+            if rec.amount + rec.redeem_amount > rec.invoice_ids[0].residual:
                 return {
                     'warning': {
                         'title': 'Redeem Point',
@@ -75,12 +75,12 @@ class AccountPayment(models.Model):
     def onchange_redeem_point(self):
         for rec in self:
             if rec.redeem_point:
-                rec.amount = rec.amount - rec.redeem_point
+                rec.amount = rec.amount - (rec.redeem_point * rec.invoice_ids[0].partner_id.member_loyalty_level_id.to_amount)
 
                 rec.payment_difference = 0.00
                 
-                total_points = rec.invoice_ids.partner_id.total_remaining_points
-                if rec.redeem_point and rec.invoice_ids.partner_id.member_status:
+                total_points = rec.invoice_ids[0].partner_id.total_remaining_points
+                if rec.redeem_point and rec.invoice_ids[0].partner_id.member_status:
                     if rec.redeem_point > total_points:
                         rec.redeem_point = 0.00
                         return {
@@ -89,10 +89,10 @@ class AccountPayment(models.Model):
                                 'message': 'Point yang akan di redeem melewati point yang dimiliki!!!'
                             }
                         }
-                    rec.redeem_amount = rec.redeem_point * rec.invoice_ids.partner_id.member_loyalty_level_id.to_amount
+                    rec.redeem_amount = rec.redeem_point * rec.invoice_ids[0].partner_id.member_loyalty_level_id.to_amount
                 self._check_available_payment()
             else:
-                rec.amount = rec.invoice_ids.residual - rec.payment_difference
+                rec.amount = rec.invoice_ids[0].residual - rec.payment_difference
                 rec.redeem_amount = 0.00
 
     @api.multi
@@ -143,7 +143,7 @@ class AccountPayment(models.Model):
                             self._check_available_payment()
                             if self.redeem_point > 0:
                                 redeemed_vals = {
-                                    'partner_id': self.invoice_ids.partner_id.id,
+                                    'partner_id': self.invoice_ids[0].partner_id.id,
                                     'points': self.redeem_point,
                                     'redeem_amount': redeem_amount,
                                     'sale_order_id': sale_order.id,

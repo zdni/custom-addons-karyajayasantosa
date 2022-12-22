@@ -69,6 +69,12 @@ class ReportProductConsigment(models.TransientModel):
                 ('res_id', '=', invoice['mail_message_res_id'])
             ], limit=1, order='id DESC')
             if date_paid.create_date == invoice['create_date'][:19]:
+                product = self.env['product.product'].search([
+                    ('id', '=', invoice['product_id'])
+                ])
+                if not product.categ_id.is_consigment: 
+                    continue
+                
                 origin = invoice['origin']
 
                 operations = self.env['stock.pack.operation'].search([

@@ -43,7 +43,7 @@
         <menuitem id="menu_wizard_report_product_consigment"
                   name="Laporan Produk Konsinyasi"
                   action="action_report_product_consigment_age"
-                  parent="account.menu_finance_legal_statement"
+                  parent="sales_team.menu_sale_report"
                   sequence="2"/>
     </data>
 </odoo>

@@ -40,7 +40,7 @@
         <menuitem id="menu_wizard_report_brand_sales"
                   name="Laporan Penjualan Merk"
                   action="action_report_brand_sales"
-                  parent="account.menu_finance_legal_statement"
+                  parent="sales_team.menu_sale_report"
                   sequence="2"/>
     </data>
 </odoo>

@@ -18,7 +18,7 @@ odoo.define('loyalty_point.pos', function (require) {
     models.load_fields('res.partner', [
 		'card_number_lyt', 'member_status', 'member_loyalty_level_id', 'total_points', 'total_remaining_points', 'config_member'
 	]);
-	models.load_models('product.template', ['not_earn_loyatly_point']);
+	models.load_fields('product.product', ['not_earn_loyatly_point']);
 
     var _super_posmodel = models.PosModel;
 	models.PosModel = models.PosModel.extend({
@@ -351,8 +351,9 @@ odoo.define('loyalty_point.pos', function (require) {
 				const orderline = orderlines[index];
 				const product = orderline.product;
 				
-				if( product.not_earn_loyatly_point ) continue;
-				total += (orderline.price * orderline.quantity) - orderline.discount;
+				if( !product.not_earn_loyatly_point ) {
+					total += (orderline.price * orderline.quantity) - orderline.discount;
+				}
 			}
 			return total;
 		},

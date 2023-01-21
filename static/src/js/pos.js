@@ -18,6 +18,7 @@ odoo.define('loyalty_point.pos', function (require) {
     models.load_fields('res.partner', [
 		'card_number_lyt', 'member_status', 'member_loyalty_level_id', 'total_points', 'total_remaining_points', 'config_member'
 	]);
+	models.load_models('product.template', ['not_earn_loyatly_point']);
 
     var _super_posmodel = models.PosModel;
 	models.PosModel = models.PosModel.extend({
@@ -95,7 +96,7 @@ odoo.define('loyalty_point.pos', function (require) {
 				var total_remaining_points = order.get_client().total_remaining_points - order.get_loyalty_redeemed_point(); 
 				if( Number(redeem_point_input.val()) <= total_remaining_points ) {
 					var amount_to_redeem = (Number(redeem_point_input.val()) * loyalty_config.to_amount) / loyalty_config.points;
-					if( amount_to_redeem <= (order.get_due() || order.get_total_with_tax() ) ){
+					if( amount_to_redeem <= (order.get_due() || order._calculate_total_order_without_product_not_earned() ) ){
 						if( self.pos.config.loyalty_journal_id ){
 							var loyalty_cashregister = _.find(self.pos.cashregisters, function(cashregister){
 								return cashregister.journal_id[0] === self.pos.config.loyalty_journal_id[0] ? cashregister : false;
@@ -113,7 +114,7 @@ odoo.define('loyalty_point.pos', function (require) {
 
 								order.set_loyalty_earned_point( 
 									order._calculate_earned_point( 
-										order.get_total_with_tax(), 
+										order._calculate_total_order_without_product_not_earned(), 
 										order.get_loyalty_redeemed_point() || 0.00 
 									)
 								);
@@ -149,7 +150,7 @@ odoo.define('loyalty_point.pos', function (require) {
 		    				$(this).val(0);
 		    				$('.point_to_amount').text('0.00');
 		    			}
-		    			if(amount > (order.get_due() || order.get_total_with_tax())){
+		    			if(amount > (order.get_due() || order._calculate_total_order_without_product_not_earned())){
 		    				alert("Loyalty Amount exceeding Due Amount");
 		    				$(this).val(0);
 		    				$('.point_to_amount').text('0.00');
@@ -254,7 +255,7 @@ odoo.define('loyalty_point.pos', function (require) {
 		},
 		export_as_JSON: function() {
 			var order = _super_order.export_as_JSON.call(this);
-			var new_earned_point = this._calculate_earned_point( this.get_total_with_tax(), this.get_loyalty_redeemed_point() || 0.00 );
+			var new_earned_point = this._calculate_earned_point( this._calculate_total_order_without_product_not_earned(), this.get_loyalty_redeemed_point() || 0.00 );
 			var new_earned_amount = this.get_loyalty_amount_by_point(new_earned_point);
 
 			var new_val = {
@@ -274,7 +275,7 @@ odoo.define('loyalty_point.pos', function (require) {
     		_super_order.remove_paymentline.apply(this, arguments);
     	},
 		get_total_loyalty_points: function(){
-			var new_earned_point = this._calculate_earned_point( this.get_total_with_tax(), this.get_loyalty_redeemed_point() || 0.00 );
+			var new_earned_point = this._calculate_earned_point( this._calculate_total_order_without_product_not_earned(), this.get_loyalty_redeemed_point() || 0.00 );
 
     		var temp = 0
     		if(this.get_client()){
@@ -285,7 +286,7 @@ odoo.define('loyalty_point.pos', function (require) {
     		return temp.toFixed()
     	},
 		get_total_loyalty_points_format: function() {
-			var new_earned_point = this._calculate_earned_point( this.get_total_with_tax(), this.get_loyalty_redeemed_point() || 0.00 );
+			var new_earned_point = this._calculate_earned_point( this._calculate_total_order_without_product_not_earned(), this.get_loyalty_redeemed_point() || 0.00 );
 
     		var temp = 0
     		if(this.get_client()){
@@ -300,7 +301,7 @@ odoo.define('loyalty_point.pos', function (require) {
     		return str;
 		},
 		get_new_earned_point_format: function() {
-			var new_earned_point = this._calculate_earned_point( this.get_total_with_tax(), this.get_loyalty_redeemed_point() || 0.00 );
+			var new_earned_point = this._calculate_earned_point( this._calculate_total_order_without_product_not_earned(), this.get_loyalty_redeemed_point() || 0.00 );
 			var str = "" + new_earned_point
 			str = new Intl.NumberFormat("id-ID", {style: "currency", currency: "IDR"}).format(str);
 			str = str.replace(/[Rp\s]/g, '')
@@ -308,7 +309,7 @@ odoo.define('loyalty_point.pos', function (require) {
 		},
 		export_for_printing: function() {
 			var receipt = _super_order.export_for_printing.call(this);
-			var new_earned_point = this._calculate_earned_point( this.get_total_with_tax(), this.get_loyalty_redeemed_point() || 0.00 );
+			var new_earned_point = this._calculate_earned_point( this._calculate_total_order_without_product_not_earned(), this.get_loyalty_redeemed_point() || 0.00 );
 
 			var new_val = {
 				total_points: this.get_total_loyalty_points() || false,
@@ -338,7 +339,23 @@ odoo.define('loyalty_point.pos', function (require) {
 			return 0;
 		},
 
+		_calculate_total_order_without_product_not_earned: function() {
+			let total = 0;
+			const order = this.pos.get_order();
+			if( !order ) return total;
+			
+			const orderlines = order.orderlines.models;
+			if( !orderlines.length ) return total;
 
+			for (let index = 0; index < orderlines.length; index++) {
+				const orderline = orderlines[index];
+				const product = orderline.product;
+				
+				if( product.not_earn_loyatly_point ) continue;
+				total += (orderline.price * orderline.quantity) - orderline.discount;
+			}
+			return total;
+		},
 		_calculate_earned_point: function(total, redeem) {
 			if( this.attributes ){
 				const partner_id = ( this.attributes.client !== null ) ? this.attributes.client.id : false;
@@ -372,7 +389,7 @@ odoo.define('loyalty_point.pos', function (require) {
 			}
 			this.hidden_loyalty_info_cart();
 			if( order.get_client() ) {
-				var total_points = order._calculate_earned_point( order.get_total_with_tax(), order.get_loyalty_redeemed_point() || 0.00 );
+				var total_points = order._calculate_earned_point( order._calculate_total_order_without_product_not_earned(), order.get_loyalty_redeemed_point() || 0.00 );
 				
 				!total_points ? this.hidden_loyalty_info_cart() : this.show_loyalty_info_cart();
 

@@ -20,6 +20,7 @@ Config:
         'views/account_payment_view.xml',
         'views/loyalty_config_view.xml',
         'views/loyalty_point.xml',
+        'views/product_template.xml',
         'views/point_of_sale.xml',
         'views/sale_order.xml',
         'views/scheduler.xml',

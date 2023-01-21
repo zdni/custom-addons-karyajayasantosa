@@ -9,6 +9,9 @@ class ResPartner(models.Model):
     @api.multi
     def action_server_member_card(self):
         if not self.card_number_lyt:
+            card_number = self.env['ir.sequence'].next_by_code('member.card.number')
+            
             self.member_status = True
-            self.card_number_lyt = self.env['ir.sequence'].next_by_code('member.card.number')
+            self.card_number_lyt = card_number
+            self.barcode = card_number
             

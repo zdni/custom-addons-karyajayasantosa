@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve" >
+
+    <t t-extend="PaymentScreenWidget">
+		<t t-jquery="div.payment-buttons" t-operation="append">
+			<div class='button js_redeem_pos_vocher'>
+                <i class='fa fa-gift' /> 
+                <span>
+                	Redeem Voucher
+                </span>
+            </div>
+		</t>
+	</t>
+
+    <t t-name="RedeemVoucherPopup">
+         <div class="modal-dialog">
+            <div class="popup popup-redeem-voucher">
+            	<p class="title">Redeem Voucher</p>
+                <div class="voucher_info">
+                    <table>
+                        <colgroup>
+                            <col width="50%" />
+                        </colgroup>
+                        <tr>
+                            <td>Code Voucher: </td>
+                            <td>
+                                <input type="text" class="code_redeemed_voucher"/>
+                                <input type="hidden" class="name_redeemed_voucher"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Total Redeem: </td>
+                            <td><span class="amount_redeemed_voucher"></span></td>
+                        </tr>
+                    </table>
+                    <br/>
+                </div>
+            	<div class="footer">
+            		<div class="button check-code-voucher">
+                        Cek Voucher
+                    </div>
+            		<div class="button confirm">
+                        Redeem
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+            
+    	 </div>
+    </t>
+
+</templates>

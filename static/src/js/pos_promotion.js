@@ -18,10 +18,12 @@ odoo.define('ti_pos_retail.promotion', function (require) {
             },
             fields: ['name', 'start_date', 'end_date', 'type', 'product_id', 'discount_lowest_price', 'product_ids', 'minimum_items', 'discount_first_order'],
             domain: function (self) {
+                const date = new Date();
+                const actual_date = date.setHours(date.getHours() - 8);
                 return [
                     ['id', 'in', self.config.promotion_ids],
-                    ['start_date', '<=', time.date_to_str(new Date()) + " " + time.time_to_str(new Date())],
-                    ['end_date', '>=', time.date_to_str(new Date()) + " " + time.time_to_str(new Date())]
+                    ['start_date', '<=', time.date_to_str(new Date(actual_date)) + " " + time.time_to_str(new Date(actual_date))],
+                    ['end_date', '>=', time.date_to_str(new Date(actual_date)) + " " + time.time_to_str(new Date(actual_date))]
                 ]
             },
             loaded: function (self, promotions) {

@@ -19,6 +19,15 @@
                             <field name="promotion_ids" widget="many2many_tags"/>
                         </group>
                     </page>
+                    <page name="pos_voucher" string="POS Voucher">
+                        <group>
+                            <field name="enable_pos_voucher"/>
+                            <field name="voucher_journal_id" 
+                                attrs="{'invisible': [('enable_pos_voucher', '=', False)], 'required': [('enable_pos_voucher', '=', True)]}"
+                                context="{'journal_ids': journal_ids, 'voucher_jr': True}"
+                                options="{'no_create':True}"/>
+                        </group>
+                    </page>
                 </notebook>
             </xpath>
         </field>

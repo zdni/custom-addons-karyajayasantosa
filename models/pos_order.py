@@ -28,9 +28,14 @@ class PosOrder(models.Model):
                                      'promotion_id',
                                      string='Promotions')
 
+    amount_voucher = fields.Float('Amount Voucher')
+    code_voucher = fields.Char('Code Voucher')
+    name_voucher = fields.Char('Voucher')
+
     @api.model
     def _order_fields(self, ui_order):
         process_line = partial(self.env['pos.order.line']._order_line_fields)
+        _logger.warning( ui_order )
         return {
             'name'                  : ui_order['name'],
             'user_id'               : ui_order['user_id'] or False,
@@ -44,6 +49,9 @@ class PosOrder(models.Model):
             'has_discount'          : ui_order['has_discount'] or False,
             'percent_discount'      : ui_order['percent_discount'] or False,
             'total_discount'        : ui_order['total_discount'] or False,
+            'amount_voucher'        : ui_order['amount_redeemed_voucher'] or False,
+            'code_voucher'          : ui_order['code_redeemed_voucher'] or False,
+            'name_voucher'          : ui_order['name_redeemed_voucher'] or False,
         }
 
     # def _create_account_move_line(self, session=None, move=None):

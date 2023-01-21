@@ -11,6 +11,7 @@
                 <script type="text/javascript" src="/ti_pos_retail/static/src/js/pos_discount_customer.js"></script>
                 <script type="text/javascript" src="/ti_pos_retail/static/src/js/pos_global_discount.js"></script>
                 <script type="text/javascript" src="/ti_pos_retail/static/src/js/pos_promotion.js"></script>
+                <script type="text/javascript" src="/ti_pos_retail/static/src/js/pos_voucher.js"></script>
                 <script type="text/javascript" src="/ti_pos_retail/static/src/js/screen_order_widget.js"></script>
                 
                 <link type="text/css" rel="stylesheet" href="/ti_pos_retail/static/src/css/core.css"/>

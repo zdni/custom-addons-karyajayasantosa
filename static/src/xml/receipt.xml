@@ -13,4 +13,54 @@
         </t>
     </t>
 
+	<t t-extend="PosTicket">
+		<t t-jquery="[t-if='receipt.footer']" t-operation="before">
+		    <t t-if="widget.pos.config.enable_pos_voucher">
+		        <div class="pos-center-align">REDEEM VOUCHER</div>
+			    <table>
+		            <t t-if="order.get_name_redeemed_voucher()">
+		                <tr>
+		                    <td>Voucher:</td>
+		                    <td class="pos-right-align">
+		                        <t t-esc="order.get_name_redeemed_voucher()"/>
+		                    </td>
+		                </tr>
+		            </t>
+		            <t t-if="order.get_amount_redeemed_voucher()">
+			            <tr class="emph">
+			                <td>Amount Redeem:</td>
+			                <td class="pos-right-align">
+			                    <t t-esc="order.get_amount_redeemed_voucher()"/>
+			                </td>
+			            </tr>
+		            </t>
+	            </table>
+	            <div class="pos-center-align">--------------------------------</div>
+            </t>
+		</t>
+	</t>
+
+	<t t-extend="XmlReceipt">
+		<t t-jquery=".before-footer" t-operation="before">
+		    <t t-if="widget.pos.config.enable_pos_voucher">
+			    <div>--------------------------------</div>
+			    <div>REDEEM VOUCHER</div>
+				<t t-if="receipt.name_redeemed_voucher">
+					<line>
+		                <left><pre>Voucher</pre></left>
+		                <right><value><t t-esc='receipt.name_redeemed_voucher' /></value></right>
+		            </line>
+				</t>
+	            <t t-if="receipt.amount_redeemed_voucher">
+	                <line>
+	                    <left><pre>Amount Redeem</pre></left>
+	                    <right><value><t t-esc='receipt.amount_redeemed_voucher' /></value></right>
+	                </line>
+	            </t>
+	            <div>--------------------------------</div>
+            </t>
+		</t>
+		
+	</t>
+
 </templates>

@@ -24,11 +24,13 @@
         'views/pos_discount_customer.xml',
         'views/pos_discount_global.xml',
         'views/pos_order.xml',
+        'views/pos_voucher.xml',
     ],
     'images': ['static/description/icon.png'],
     'qweb': [
         'static/src/xml/global_discount.xml',
         'static/src/xml/pos_promotion.xml',
+        'static/src/xml/pos_voucher.xml',
         'static/src/xml/receipt.xml',
     ],
     'installable': True,

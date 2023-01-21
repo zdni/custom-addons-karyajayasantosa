@@ -2,3 +2,4 @@ import pos_config
 import pos_discount_customer
 import pos_order
 import pos_promotion
+import pos_voucher

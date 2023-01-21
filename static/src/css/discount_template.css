@@ -14,3 +14,17 @@
 .hidden_subentry {
 	display: none;
 }
+
+.voucher_info table{
+	width: 100%;
+	font-size: 15px
+}
+.voucher_info table tr td{
+	padding: 10px;
+}
+.voucher_info table tr td:first-child{
+	text-align: right;
+}
+.voucher_info table tr td:last-child{
+	text-align: left;
+}

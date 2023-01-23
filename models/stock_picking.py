@@ -1,6 +1,5 @@
 from odoo import api, fields, models, _
-import time
-from odoo.exceptions import UserError
+from datetime import datetime, timedelta
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -12,7 +11,19 @@ class StockPicking(models.Model):
     phone_number = fields.Char('Phone Number')
     delivery_address = fields.Char('Delivery Address')
     delivery_date = fields.Datetime('Delivery Date')
+    delivery_date_str = fields.Char('Delivery DAte Str')
     picking_data = fields.Text("Picking Data", readonly=True)
+
+    @api.multi
+    def write(self, values):
+        if 'delivery_date' in values and values['delivery_date']:
+            date_time_str = values['delivery_date']
+            date_time = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+            original_date_time = date_time + timedelta(hours=8)
+            original_date_time_str = original_date_time.strftime('%Y-%m-%d %H:%M:%S')
+            values['delivery_date_str'] = original_date_time_str
+        
+        return super(StockPicking, self).write(values)
 
     @api.multi
     def action_refresh_picking_data(self):

@@ -49,7 +49,7 @@ ${'SURAT JALAN'.center(136)}
 ${'Nama Penerima'.ljust(22)} ${':'} ${object.recipient}
 ${'Nomor Telepon'.ljust(22)} ${':'} ${object.phone_number}
 ${'Alamat Pengantaran'.ljust(22)} ${':'} ${object.delivery_address}
-${'Waktu Pengantaran'.ljust(22)} ${':'} ${object.delivery_date}
+${'Waktu Pengantaran'.ljust(22)} ${':'} ${object.delivery_date_str}
 ${''.rjust(136, '-')}
  ${'Produk'.ljust(86)}|${'Satuan Unit'.center(13)}|${'Jumlah dikirim'.center(16)}|${'Jumlah diterima'.rjust(16)}
 ${''.rjust(136, '-')}

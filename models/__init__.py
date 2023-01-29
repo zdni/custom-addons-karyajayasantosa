@@ -1,0 +1,3 @@
+import pos_order
+import res_partner
+import marketing_agent_report

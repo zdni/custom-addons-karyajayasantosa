@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <report
+                id="action_marketing_agent_file"
+                string="Laporan Penjualan SPG"
+                model="marketing.agent.report"
+                report_type="qweb-pdf"
+                file="marketing_agent.marketing_agent_report_temp"
+                name="marketing_agent.marketing_agent_report_temp"
+        />
+    
+    </data>
+</odoo>

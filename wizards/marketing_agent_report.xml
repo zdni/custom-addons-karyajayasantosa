@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="marketing_agent_form_view" model="ir.ui.view">
+            <field name="name">marketing.agent.report.form.view</field>
+            <field name="model">marketing.agent.report</field>
+            <field name="arch" type="xml">
+                <form string="Marketing Agent Report">
+                    <group>
+                        <field name="marketing_agent_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="print_marketing_agent_report" string="Print" class="oe_highlight" type="object"/>
+                        Or
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+    
+        <record id="action_marketing_agent_report" model="ir.actions.act_window">
+			<field name="name">Marketing Agent Report</field>
+			<field name="res_model">marketing.agent.report</field>
+			<field name="view_mode">form</field>
+			<field name="view_type">form</field>
+			<field name="target">new</field>
+		</record>
+    
+    </data>
+    
+</odoo>

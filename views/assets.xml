@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="marketing_agent_assets" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/marketing_agent/static/src/css/pos.css" id="pos-stylesheet"/>
+                
+                <script type="text/javascript" src="/marketing_agent/static/src/js/db.js"></script>
+                <script type="text/javascript" src="/marketing_agent/static/src/js/models.js"></script>
+                <script type="text/javascript" src="/marketing_agent/static/src/js/screens.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem
+            id="marketing_agent_menu"
+            name="Marketing Agent"
+            parent="sales_team.menu_base_partner"
+            sequence="10"/>
+
+        <menuitem
+            id="marketing_agent_list_menu"
+            name="Marketing Agent List"
+            action="action_marketing_agent_list"
+            parent="marketing_agent_menu"
+            sequence="10"/>
+
+        <menuitem id="marketing_agent_report_menu"
+            action="action_marketing_agent_report"
+            name="Marketing Agent Report"
+            parent="marketing_agent_menu"
+            sequence="10" />
+    
+    </data>
+</odoo>

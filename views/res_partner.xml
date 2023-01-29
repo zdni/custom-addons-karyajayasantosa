@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record id="view_partner_property_form_inherit_point_of_sale" model="ir.ui.view">
+            <field name="name">res.partner.view.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="point_of_sale.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='barcode']" position="after">
+                    <field name="is_marketing_agent" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_res_partner_filter_marketing_agent" model="ir.ui.view">
+            <field name="name">res.partner.select</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <filter name="supplier" position="after">
+                    <filter string="Marketing Agent" name="marketing_agent" domain="[('is_marketing_agent', '=', 1)]" help="Marketing Agent Partners"/>
+                </filter>
+            </field>
+        </record>
+
+        <record id="action_marketing_agent_list" model="ir.actions.act_window">
+            <field name="name">Marketing Agent</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{"search_default_marketing_agent": 1, 'default_marketing_agent': 1, 'default_customer': 0, 'default_supplier': 1}</field>
+            <field name="search_view_id" ref="view_res_partner_filter_marketing_agent"/>
+        </record>
+    
+    </data>
+</odoo>

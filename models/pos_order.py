@@ -34,17 +34,8 @@ class PosOrder(models.Model):
 
     @api.model
     def _order_fields(self, ui_order):
-        process_line = partial(self.env['pos.order.line']._order_line_fields)
-        _logger.warning( ui_order )
-        return {
-            'name'                  : ui_order['name'],
-            'user_id'               : ui_order['user_id'] or False,
-            'session_id'            : ui_order['pos_session_id'],
-            'lines'                 : [process_line(l) for l in ui_order['lines']] if ui_order['lines'] else False,
-            'pos_reference'         : ui_order['name'],
-            'partner_id'            : ui_order['partner_id'] or False,
-            'date_order'            : ui_order['creation_date'],
-            'fiscal_position_id'    : ui_order['fiscal_position_id'],
+        res = super(PosOrder, self)._order_fields(ui_order)
+        res.update({
             'discount_description'  : ui_order['discount_description'] or False,
             'has_discount'          : ui_order['has_discount'] or False,
             'percent_discount'      : ui_order['percent_discount'] or False,
@@ -52,7 +43,8 @@ class PosOrder(models.Model):
             'amount_voucher'        : ui_order['amount_redeemed_voucher'] or False,
             'code_voucher'          : ui_order['code_redeemed_voucher'] or False,
             'name_voucher'          : ui_order['name_redeemed_voucher'] or False,
-        }
+        })
+        return res
 
     # def _create_account_move_line(self, session=None, move=None):
     #     def _flatten_tax_and_children(taxes, group_done=None):

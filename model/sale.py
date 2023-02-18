@@ -1,6 +1,5 @@
-from itertools import groupby
 from odoo import api, fields, models
-from datetime import date, datetime, timedelta
+from datetime import datetime
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -14,15 +13,15 @@ class SaleReport(models.TransientModel):
     age = fields.Integer('Umur Piutang')
     salespersons = fields.Many2many('res.users', string="Salesperson")
 
-    def get_data_hpp(self, number):
+    def get_data_hpp(self, origin):
         hpp = 0
 
-        move_lines = self.env['account.move.line'].search([
-            ('move_id.name', '=', number),
-            ('account_id.code', 'like', '5-')
+        moves = self.env['stock.move'].search([
+            ('picking_id.origin', '=', origin),
         ])
-        for move_line in move_lines:
-            hpp += move_line.debit
+        for move in moves:
+            for quant in move.quant_ids:
+                hpp += quant.inventory_value
 
         return hpp
 
@@ -37,66 +36,47 @@ class SaleReport(models.TransientModel):
 
         for salesperson in self.salespersons:
             array_salesperson_ids.append( salesperson.id )
-        
-        start_date = datetime.strptime( self.start_date, '%Y-%m-%d' ).date()
-        due_date = ( start_date + timedelta((self.age+1)*-1 )).strftime('%Y-%m-%d')
-        query = """
-            SELECT mail_message.id AS mail_message_id, 
-                mail_message.res_id AS mail_message_res_id, 
-                account_invoice.origin, 
-                account_invoice.date_invoice, 
-                account_invoice.number, 
-                mail_message.create_date, 
-                date_part('day', mail_message.create_date - account_invoice.date_invoice) AS invoice_age
-            FROM account_invoice
-            JOIN mail_message ON mail_message.res_id = account_invoice.id
-            WHERE account_invoice.state = 'paid'
-            AND mail_message.id IN (SELECT MAX(mail_message.id) FROM mail_message WHERE mail_message.subtype_id = 4 GROUP BY mail_message.res_id)
-            AND date_invoice <= %s
-            AND date_invoice >= %s
-            AND mail_message.create_date <= %s
-            AND mail_message.create_date >= %s
-            AND mail_message.subtype_id = 4
-            AND date_part('day', mail_message.create_date - account_invoice.date_invoice) <= %s
-            ORDER BY mail_message.create_date
-        """
-        params = [ self.end_date, due_date, self.end_date + ' 23:59:59', self.start_date, str( float( self.age ) ) ]
 
-        self.env.cr.execute( query, params )
-        invoices = self.env.cr.dictfetchall()
-        
+        invoices = self.env['account.invoice'].search([
+            ('state', '=', 'paid'),
+            ('paid_date', '>=', self.start_date),
+            ('paid_date', '<=', self.end_date),
+            ('user_id.id', 'in', array_salesperson_ids),
+        ])
         for invoice in invoices:
-            date_paid = self.env['mail.message'].search([
-                ('subtype_id', '=', 4),
-                ('res_id', '=', invoice['mail_message_res_id'])
-            ], limit=1, order='id DESC')
-            if date_paid.create_date == invoice['create_date'][:19]:
+            date_invoice = datetime.strptime(invoice.date_invoice, "%Y-%m-%d")
+            paid_date = datetime.strptime(invoice.paid_date, "%Y-%m-%d")
+            receivable_age = abs((paid_date - date_invoice).days)
+
+            if receivable_age <= self.age:
                 hpp = 0
+                salesperson = invoice.user_id.name
 
-                order = self.env['sale.order'].search([ ('name', '=', invoice['origin']) ])
-                salesperson = order.user_id.name
-                if order.user_id.id in array_salesperson_ids:
-                    data = [
-                        order.partner_id.name,
-                        order.name,
-                        invoice['date_invoice'],
-                        invoice['create_date'][:10],
-                        order.amount_total,
-                    ]
+                order = self.env['sale.order'].search([
+                    ('name', '=', invoice.origin)
+                ])
 
-                    if self.visible:
-                        hpp += self.get_data_hpp( invoice['number'] )
-                        
-                        data.append(order.margin)
-                        data.append(hpp)
+                data = [
+                    invoice.partner_id.name,
+                    invoice.origin,
+                    invoice.date_invoice,
+                    invoice.paid_date,
+                    invoice.amount_total
+                ]
 
-                    if data and salesperson:
-                        if salesperson in dictionaryResult:
-                            if data not in dictionaryResult[salesperson]:
-                                dictionaryResult[salesperson].append(data)
-                        else:
-                            dictionaryResult[salesperson] = [data]
+                if self.visible:
+                    hpp = self.get_data_hpp( invoice.origin )
+                    
+                    data.append( order.margin )
+                    data.append( hpp )
 
+                if data and salesperson:
+                    if salesperson in dictionaryResult:
+                        if data not in dictionaryResult[salesperson]:
+                            dictionaryResult[salesperson].append( data )
+                    else:
+                        dictionaryResult[salesperson] = [data]
+        
         datas = {
             'ids': self.ids,
             'model': 'sale.salesperson_omset.report',

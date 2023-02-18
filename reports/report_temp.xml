@@ -41,6 +41,7 @@
                                         <td><b>Produk</b></td>
                                         <td><b>Qty</b></td>
                                         <td><b>Harga Satuan</b></td>
+                                        <td><b>Total Diskon</b></td>
                                         <td><b>Total</b></td>
                                     </tr>
                                     <t t-set="number" t-value="1"/>
@@ -67,7 +68,10 @@
                                             </td>
                                             <td class="text-right">
                                                 <span t-esc="'{:,}'.format(invoices[5])"/>
-                                                <t t-set="total_penjualan" t-value="total_penjualan + invoices[5]"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,}'.format(invoices[6])"/>
+                                                <t t-set="total_penjualan" t-value="total_penjualan + invoices[6]"/>
                                             </td>
                                         </tr>
                                     </t>

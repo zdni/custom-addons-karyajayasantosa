@@ -1,5 +1,4 @@
-from odoo import api, fields, models, exceptions, _
-from datetime import date, datetime, timedelta
+from odoo import api, fields, models, _
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -37,81 +36,52 @@ class ReportProductConsigment(models.TransientModel):
         groupby_dict = {}
 
         # SO transaction
-        query = """
-            SELECT mail_message.id AS mail_message_id, 
-                mail_message.res_id AS mail_message_res_id, 
-                mail_message.create_date, 
-                account_invoice.origin, 
-                account_invoice.date_invoice, 
-                account_invoice.number, 
-                account_invoice_line.product_id
-            FROM account_invoice
-            JOIN mail_message ON mail_message.res_id = account_invoice.id
-            JOIN account_invoice_line ON account_invoice_line.invoice_id = account_invoice.id
-            WHERE account_invoice.state = 'paid'
-            AND mail_message.id IN (SELECT MAX(mail_message.id) FROM mail_message WHERE mail_message.subtype_id = 4 GROUP BY mail_message.res_id)
-            AND date_invoice <= %s
-            AND date_invoice >= %s
-            AND mail_message.create_date <= %s
-            AND mail_message.create_date >= %s
-            AND account_invoice.type = 'out_invoice'
-            AND mail_message.subtype_id = 4
-            ORDER BY mail_message.create_date
-        """
-        params = [ self.end_date, self.start_date, self.end_date + ' 23:59:59', self.start_date ]
-        
-        self.env.cr.execute( query, params )
-        invoices = self.env.cr.dictfetchall()
+        invoices = self.env['account.invoice'].search([
+            ('paid_date', '>=', self.start_date),
+            ('paid_date', '<=', self.end_date),
+            ('state', '=', 'paid'),
+        ])
 
         for invoice in invoices:
-            date_paid = self.env['mail.message'].search([
-                ('subtype_id', '=', 4),
-                ('res_id', '=', invoice['mail_message_res_id'])
-            ], limit=1, order='id DESC')
-            if date_paid.create_date == invoice['create_date'][:19]:
-                product = self.env['product.product'].search([
-                    ('id', '=', invoice['product_id'])
-                ])
-                if not product.categ_id.is_consigment: 
-                    continue
-                
-                origin = invoice['origin']
+            operations = self.env['stock.pack.operation'].search([
+                ('owner_id.id', 'in', array_vendor),
+                ('picking_id.origin', '=', invoice.origin),
+                ('product_id.categ_id.id', 'in', array_cat_cons),
+                ('product_id.brand_id.id', 'in', array_brand),
+            ])
 
-                operations = self.env['stock.pack.operation'].search([
-                    ('owner_id.id', 'in', array_vendor),
-                    ('picking_id.origin', '=', origin),
-                    ('product_id.categ_id.id', 'in', array_cat_cons),
-                    ('product_id.brand_id.id', 'in', array_brand),
-                ])
+            for line in operations:
+                picking = []
 
-                for line in operations:
-                    picking = []
+                picking.append( invoice.origin )
+                picking.append( invoice.paid_date )
+                picking.append( line.product_id.name )
+                picking.append( line.product_qty )
 
-                    picking.append( origin )
-                    picking.append( invoice['create_date'] )
-                    picking.append( line.product_id.name )
-                    picking.append( line.product_qty )
+                invoice_line = self.env['account.invoice.line'].search([
+                    ('product_id.id', '=', line.product_id.id),
+                    ('quantity', '=', line.product_qty),
+                    ('invoice_id.id', '=', invoice.id),
+                ], limit=1)
 
-                    invoice_line = self.env['account.invoice.line'].search([
-                        ('product_id.id', '=', line.product_id.id),
-                        ('quantity', '=', line.product_qty),
-                        ('invoice_id.origin', '=', origin),
-                    ], limit=1)
+                total = invoice_line.price_unit * line.product_qty
+                discount = invoice_line.price_subtotal - total
 
-                    picking.append(invoice_line.price_unit)
-                    picking.append(invoice_line.price_subtotal)
+                picking.append( invoice_line.price_unit )
+                picking.append( discount )
+                picking.append( invoice_line.price_subtotal )
 
-                    brand = line.product_id.brand_id.name
-                    vendor = line.owner_id.display_name
+                brand = line.product_id.brand_id.name
+                vendor = line.owner_id.display_name
 
-                    if vendor in groupby_dict:
-                        if brand in groupby_dict[vendor]:
-                            groupby_dict[vendor][brand].append( picking )
-                        else:
-                            groupby_dict[vendor][brand] = [picking]
+                if vendor in groupby_dict:
+                    if brand in groupby_dict[vendor]:
+                        groupby_dict[vendor][brand].append( picking )
                     else:
-                        groupby_dict[vendor] = {}
                         groupby_dict[vendor][brand] = [picking]
+                else:
+                    groupby_dict[vendor] = {}
+                    groupby_dict[vendor][brand] = [picking]
 
         
         # POS transaction
@@ -132,12 +102,24 @@ class ReportProductConsigment(models.TransientModel):
             for operation in operations:
                 picking = []
 
+                discount = (line.price_unit*operation.product_qty) - line.price_subtotal_incl
+                promo_lines = self.env['pos.order.line'].search([
+                    ('order_id.id', '=', line.order_id.id),
+                    ('product_get_promo_id', '=', line.product_id.id),
+                ])
+                promo = 0
+                for promo_line in promo_lines:
+                    promo += promo_line.price_subtotal_incl
+
+                discount -= promo
+
                 picking.append( name )
                 picking.append( line.order_id.date_order )
                 picking.append( operation.product_id.name )
                 picking.append( operation.product_qty )
                 picking.append( line.price_unit )
-                picking.append( line.price_subtotal_incl )
+                picking.append( discount )
+                picking.append( line.price_subtotal_incl + promo )
 
                 brand = operation.product_id.brand_id.name
                 vendor = operation.owner_id.display_name

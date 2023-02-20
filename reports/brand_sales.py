@@ -26,6 +26,7 @@ class ReportBrandSales(models.TransientModel):
             ('paid_date', '>=', self.start_date),
             ('paid_date', '<=', self.end_date),
             ('state', '=', 'paid'),
+            ('type', '=', 'out_invoice'),
         ])
 
         for invoice in invoices:

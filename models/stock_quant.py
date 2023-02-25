@@ -38,9 +38,10 @@ class Quant(models.Model):
             custom_landed_costs = self.env['custom.landed.cost'].search([('picking_ids.name', '=', picking_name)])
 
             if custom_landed_costs:
-                for line in custom_landed_costs.valuation_adjustment_lines:
-                    if line.product_id.name == self.product_id.name:
-                        total_ship_cost += line.additional_landed_cost/line.quantity
+                for custom_landed_cost in custom_landed_costs:
+                    for line in custom_landed_cost.valuation_adjustment_lines:
+                        if line.product_id.name == self.product_id.name:
+                            total_ship_cost += line.additional_landed_cost/line.quantity
             else:
                 landed_costs = self.env['stock.landed.cost'].search([('picking_ids.name', '=', picking_name)])
                 for line in landed_costs.valuation_adjustment_lines:

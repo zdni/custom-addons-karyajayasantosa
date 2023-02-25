@@ -42,7 +42,7 @@ class SaleReport(models.TransientModel):
             ('paid_date', '>=', self.start_date),
             ('paid_date', '<=', self.end_date),
             ('user_id.id', 'in', array_salesperson_ids),
-        ])
+        ], order='paid_date asc')
         for invoice in invoices:
             date_invoice = datetime.strptime(invoice.date_invoice, "%Y-%m-%d")
             paid_date = datetime.strptime(invoice.paid_date, "%Y-%m-%d")

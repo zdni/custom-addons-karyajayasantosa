@@ -38,6 +38,7 @@ class ReportBrandSales(models.TransientModel):
 
             for operation in operations:
                 picking = []
+                qty_invoiced = operation.product_qty
 
                 picking.append( invoice.origin )
                 picking.append( invoice.paid_date )
@@ -49,10 +50,22 @@ class ReportBrandSales(models.TransientModel):
                     ('quantity', '=', operation.product_qty),
                     ('invoice_id.id', '=', invoice.id),
                 ], limit=1)
+                if len( invoice_line ) < 1:
+                    invoice_line = self.env['account.invoice.line'].search([
+                        ('product_id.id', '=', operation.product_id.id),
+                        ('invoice_id.id', '=', invoice.id),
+                    ], limit=1)
 
-                total = invoice_line.price_unit * operation.product_qty
+                    so_line = self.env['sale.order.line'].search([
+                        ('product_id.id', '=', operation.product_id.id),
+                        ('order_id.name', '=', invoice.origin),
+                    ], limit=1)
+                    qty_invoiced = so_line.qty_invoiced 
+
+                total = invoice_line.price_unit * qty_invoiced
                 discount = invoice_line.price_subtotal - total
 
+                picking.append( qty_invoiced )
                 picking.append( invoice_line.price_unit )
                 picking.append( discount )
                 picking.append( invoice_line.price_subtotal )
@@ -94,6 +107,7 @@ class ReportBrandSales(models.TransientModel):
                 picking.append( name )
                 picking.append( line.order_id.date_order )
                 picking.append( operation.product_id.name )
+                picking.append( operation.product_qty )
                 picking.append( operation.product_qty )
                 picking.append( line.price_unit )
                 picking.append( discount )

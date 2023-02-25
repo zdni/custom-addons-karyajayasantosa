@@ -31,7 +31,8 @@
                                     <td><b>Transaksi</b></td>
                                     <td><b>Tgl Transaksi</b></td>
                                     <td><b>Produk</b></td>
-                                    <td><b>Qty</b></td>
+                                    <td><b>Qty Dikirim</b></td>
+                                    <td><b>Qty Dijual</b></td>
                                     <td><b>Harga Satuan</b></td>
                                     <td><b>Total Diskon</b></td>
                                     <td><b>Total</b></td>
@@ -56,14 +57,17 @@
                                             <span t-esc="invoices[3]"/>
                                         </td>
                                         <td class="text-right">
-                                            <span t-esc="'{:,}'.format(invoices[4])"/>
+                                            <span t-esc="invoices[4]"/>
                                         </td>
                                         <td class="text-right">
                                             <span t-esc="'{:,}'.format(invoices[5])"/>
                                         </td>
                                         <td class="text-right">
                                             <span t-esc="'{:,}'.format(invoices[6])"/>
-                                            <t t-set="total_penjualan" t-value="total_penjualan + invoices[6]"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="'{:,}'.format(invoices[7])"/>
+                                            <t t-set="total_penjualan" t-value="total_penjualan + invoices[7]"/>
                                         </td>
                                     </tr>
                                 </t>

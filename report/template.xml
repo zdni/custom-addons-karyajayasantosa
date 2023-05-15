@@ -34,9 +34,11 @@
                         <thead>
                             <tr>
                                 <th>Pelanggan</th>
+                                <th width="20%">Area</th>
                                 <th class="text-center">Nomor SO</th>
                                 <th class="text-center">Tanggal Invoice</th>
                                 <th class="text-center">Tanggal Pelunasan</th>
+                                <th class="text-center">Umur Nota</th>
                                 <th class="text-right">Total Transaksi</th>
                                 <t t-if="visible == True">
                                     <th class="text-right">HPP</th>
@@ -49,7 +51,7 @@
                                 <td>
                                     <span t-esc="order[0]"/>
                                 </td>
-                                <td class="text-center">
+                                <td width="20%" class="text-center">
                                     <span t-esc="order[1]"/>
                                 </td>
                                 <td class="text-center">
@@ -58,18 +60,24 @@
                                 <td class="text-center">
                                     <span t-esc="order[3]"/>
                                 </td>
+                                <td class="text-center">
+                                    <span t-esc="order[4]"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="order[5]"/>
+                                </td>
                                 <td class="text-right">
-                                    <span t-esc="'{:,}'.format(order[4])"/>
-                                    <t t-set="total_sum" t-value="total_sum + order[4]"/>
+                                    <span t-esc="'{:,}'.format(order[6])"/>
+                                    <t t-set="total_sum" t-value="total_sum + order[6]"/>
                                 </td>
                                 <t t-if="visible == True">
                                     <td class="text-right">
-                                        <span t-esc="'{:,}'.format(order[6])"/>
-                                        <t t-set="total_hpp" t-value="total_hpp + order[6]"/>
+                                        <span t-esc="'{:,}'.format(order[8])"/>
+                                        <t t-set="total_hpp" t-value="total_hpp + order[8]"/>
                                     </td>
                                     <td class="text-right">
-                                        <span t-esc="'{:,}'.format(order[5])"/>
-                                        <t t-set="total_margin" t-value="total_margin + order[5]"/>
+                                        <span t-esc="'{:,}'.format(order[7])"/>
+                                        <t t-set="total_margin" t-value="total_margin + order[7]"/>
                                     </td>
                                 </t>
                             </tr>            

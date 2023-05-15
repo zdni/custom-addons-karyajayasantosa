@@ -42,11 +42,12 @@ class SaleReport(models.TransientModel):
             ('paid_date', '>=', self.start_date),
             ('paid_date', '<=', self.end_date),
             ('user_id.id', 'in', array_salesperson_ids),
+            ('type', '=', 'out_invoice'),
         ], order='paid_date asc')
         for invoice in invoices:
             date_invoice = datetime.strptime(invoice.date_invoice, "%Y-%m-%d")
             paid_date = datetime.strptime(invoice.paid_date, "%Y-%m-%d")
-            receivable_age = abs((paid_date - date_invoice).days)
+            receivable_age = abs((paid_date - date_invoice).days)+1
 
             if receivable_age <= self.age:
                 hpp = 0
@@ -58,9 +59,11 @@ class SaleReport(models.TransientModel):
 
                 data = [
                     invoice.partner_id.name,
+                    invoice.partner_id.alamat_lengkap,
                     invoice.origin,
                     invoice.date_invoice,
                     invoice.paid_date,
+                    receivable_age,
                     invoice.amount_total
                 ]
 

@@ -9,5 +9,14 @@
                 file="laporan_omset_margin_salesperson.omset_margin_temp"
                 name="laporan_omset_margin_salesperson.omset_margin_temp"
         />
+
+        <record id="paperformat_report" model="report.paperformat">
+            <field name="name">Laporan Omset dan Margin per Salesperson</field>
+            <field name="orientation">Landscape</field>
+        </record>
+
+        <record id="action_laporan_omset_margin" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="paperformat_report"/>
+        </record>  
     </data>
 </odoo>

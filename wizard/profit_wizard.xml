@@ -19,7 +19,10 @@
                     </group>
 
                     <footer>
-                        <button name="print_profit_pos_report" string="Print Report" class="oe_highlight"
+                        <button name="print_profit_pos_report" string="Print PDF" class="oe_highlight"
+                                type="object"/>
+                        Or
+                        <button name="print_profit_pos_report_xlsx" string="Print Excel" class="oe_highlight"
                                 type="object"/>
                         Or
                         <button string="Cancel" class="btn-default" special="cancel"/>

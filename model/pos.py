@@ -142,3 +142,20 @@ class ProfitPoSReport(models.TransientModel):
             'end_date': self.end_date,
         }
         return self.env['report'].get_action(self,'profit_pos_report.pos_report_temp', data=datas)
+    
+    @api.multi
+    def print_profit_pos_report_xlsx(self):
+        context = self._context
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'pos.report'
+        datas['form'] = self.read()[0]
+        for field in datas['form'].keys():
+            if isinstance(datas['form'][field], tuple):
+                datas['form'][field] = datas['form'][field][0]
+        if len(datas['ids']) > 1:
+            raise except_orm('Warning', 'Selection of multiple record is not allowed')
+        else:
+            return {'type': 'ir.actions.report.xml',
+                'report_name': 'profit_pos_report_xlsx',
+                'datas': datas,
+            }

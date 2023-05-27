@@ -6,7 +6,7 @@
     'summary': 'Profit PoS Report.',
     'description': '''Profit PoS Report'''
                    ,
-    'depends': ['base', 'point_of_sale'],
+    'depends': ['base', 'point_of_sale', 'report'],
     'data': [
         'report/pos_report_temp.xml',
         'report/pos_temp.xml',

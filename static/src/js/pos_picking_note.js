@@ -13,8 +13,9 @@ odoo.define("pos_picking_note.pos_picking_note", function (require) {
     pos_model.load_fields('pos.order.line',['picking_note', 'qty_picking', 'qty_picking_str']);
 
     pos_model.Orderline = pos_model.Orderline.extend({
-        initialize: function(attr, options) {
-            _super_orderline.initialize.call(this,attr,options);
+        initialize: function() {
+            _super_orderline.initialize.apply(this,arguments);
+            // _super_orderline.initialize.call(this,attr,options);
             this.picking_note = this.picking_note || "";
             this.qty_picking = this.qty_picking || 0;
             this.qty_picking_str = this.qty_picking_str || "";

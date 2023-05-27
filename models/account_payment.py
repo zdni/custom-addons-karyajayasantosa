@@ -4,6 +4,15 @@ from datetime import datetime, timedelta
 import logging
 _logger = logging.getLogger(__name__)
 
+class account_abstract_payment(models.AbstractModel):
+    _inherit = "account.abstract.payment"
+
+    @api.one
+    @api.constrains('amount')
+    def _check_amount(self):
+        if self.amount < 0.0:
+            raise ValidationError(_('The payment amount must be strictly positive.'))
+
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 

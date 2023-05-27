@@ -38,7 +38,8 @@
                                     <td><b>Total</b></td>
                                 </tr>
                                 <t t-set="number" t-value="1"/>
-                                <t t-foreach="data[brand]" t-as="invoices">
+                                <t t-foreach="data[brand]" t-as="product">
+                                    <t t-set="invoices" t-value="data[brand][product]"/>
                                     <tr>
                                         <td>
                                             <span t-esc="number"/>

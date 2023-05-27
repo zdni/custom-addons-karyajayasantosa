@@ -18,6 +18,9 @@
                     <group>
                         <field name="brand_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}"/>
                     </group>
+                    <group>
+                        <field name="type"/>
+                    </group>
 
                     <footer>
                         <button name="print_report" string="Print Report" class="oe_highlight" type="object"/>

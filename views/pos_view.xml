@@ -20,6 +20,9 @@
                         <button name="print_salesperson_vise_report" string="Print Report" class="oe_highlight"
                                 type="object"/>
                         Or
+                        <button name="print_salesperson_vise_report_xlsx" string="Print Excel" class="oe_highlight"
+                                type="object"/>
+                        Or
                         <button string="Cancel" class="btn-default" special="cancel"/>
                     </footer>
                 </form>

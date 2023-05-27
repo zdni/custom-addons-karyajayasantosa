@@ -18,9 +18,7 @@ class PointOfSalePosReport(models.TransientModel):
         _logger.warning( "print_salesperson_vise_report" )
         groupby_dict = {}
         for user in self.user_ids:
-            user_pos_sessions = {}
             pos_sessions = self.env['pos.session'].search([ ('user_id', '=', user.id), ('start_at', '>=', self.start_date), ('start_at', '<=', self.end_date), ('state', '=', 'closed' ) ], order="start_at asc")
-            _logger.warning( pos_sessions )
 
             groupby_dict[user.name] = pos_sessions
 
@@ -76,3 +74,19 @@ class PointOfSalePosReport(models.TransientModel):
         # return
         return self.env['report'].get_action(self,'pos_report_saleperson_groupby.pos_temp', data=datas)
        
+    @api.multi
+    def print_salesperson_vise_report_xlsx(self):
+        context = self._context
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'point_of_sale.pos.report'
+        datas['form'] = self.read()[0]
+        for field in datas['form'].keys():
+            if isinstance(datas['form'][field], tuple):
+                datas['form'][field] = datas['form'][field][0]
+        if len(datas['ids']) > 1:
+            raise except_orm('Warning', 'Selection of multiple record is not allowed')
+        else:
+            return {'type': 'ir.actions.report.xml',
+                'report_name': 'salesperson_pos_xlsx',
+                'datas': datas,
+            }

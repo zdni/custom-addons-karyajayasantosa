@@ -59,7 +59,7 @@ class StockCard(models.Model):
                 stock_card = self.env['stock.card'].search([
                     ('date', '<=', move.date),
                     ("product_id.id", "=", product_id),
-                    ("description", "=", ["Barang Keluar dari " + move.location_id.location_id.name, "Barang Masuk ke " + move.location_id.location_id.name])
+                    ("description", "in", ["Barang Keluar dari " + move.location_id.location_id.name, "Barang Masuk ke " + move.location_id.location_id.name])
                 ], order="date desc, id desc", limit=1)
                 qty_start = stock_card.qty_balance
                 # qty_start = 0
@@ -99,7 +99,7 @@ class StockCard(models.Model):
                 stock_card = self.env['stock.card'].search([
                     ('date', '<=', move.date),
                     ("product_id.id", "=", product_id),
-                    ("description", "=", ["Barang Keluar dari " + move.location_dest_id.location_id.name, "Barang Masuk ke " + move.location_dest_id.location_id.name])
+                    ("description", "in", ["Barang Keluar dari " + move.location_dest_id.location_id.name, "Barang Masuk ke " + move.location_dest_id.location_id.name])
                 ], order="date desc, id desc", limit=1)
                 qty_start = stock_card.qty_balance
                 # qty_start = 0
@@ -148,5 +148,4 @@ class StockCard(models.Model):
         if init.uom_type == 'smaller':
             value = value*init.factor
         
-        _logger.warning( value )
         return value

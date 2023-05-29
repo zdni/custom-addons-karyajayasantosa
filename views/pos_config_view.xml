@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="pos_lock_order_pos_config_inherit">
+            <field name="name">pos.lock.order.pos.config.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <field name="allow_order_out_of_stock" position="after">
+                    <field name="lock_order"/>
+                    <field name="authorization_order_user_ids" widget="many2many_tags" attrs="{'invisible':[('lock_order', '=', False)], 'required':[('lock_order', '=', True)]}"/>
+                    <field name="string_pin_order" invisible="True"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

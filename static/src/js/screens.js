@@ -40,7 +40,6 @@ odoo.define('check_so_under_cost.screens', function (require) {
                 const order = self.pos.get_order();
                 const orderlines = order.get_orderlines();
                 const stock_location = self.pos.config.stock_location_id;
-                console.log( 'stock_location: ', stock_location )
                 let products = '';
                 
                 for (let index = 0; index < orderlines.length; index++) {
@@ -63,7 +62,7 @@ odoo.define('check_so_under_cost.screens', function (require) {
                                 .all()
                                 .then(
                                     function(stock_quant) {
-                                        console.log( stock_quant )
+                                        if(product.qty_available === 0) return
                                         if( orderline_price < stock_quant[0].cost ) {
                                             products += product.display_name + ', ';
                                             orderline.set_unit_price( product.list_price );

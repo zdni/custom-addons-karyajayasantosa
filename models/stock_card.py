@@ -62,11 +62,6 @@ class StockCard(models.Model):
                     ("description", "in", ["Barang Keluar dari " + move.location_id.location_id.name, "Barang Masuk ke " + move.location_id.location_id.name])
                 ], order="date desc, id desc", limit=1)
                 qty_start = stock_card.qty_balance
-                # qty_start = 0
-                # for stock_card in stock_cards:
-                #     if move.location_id.location_id.name in stock_card.description:
-                #         qty_start = stock_card.qty_balance
-                #         break
 
                 if move.picking_id.name:
                     if "/IN/" in move.picking_id.name:
@@ -102,11 +97,6 @@ class StockCard(models.Model):
                     ("description", "in", ["Barang Keluar dari " + move.location_dest_id.location_id.name, "Barang Masuk ke " + move.location_dest_id.location_id.name])
                 ], order="date desc, id desc", limit=1)
                 qty_start = stock_card.qty_balance
-                # qty_start = 0
-                # for stock_card in stock_cards:
-                #     if move.location_dest_id.location_id.name in stock_card.description:
-                #         qty_start = stock_card.qty_balance
-                #         break
                 
                 if move.picking_id.name:
                     if "/IN/" in move.picking_id.name:

@@ -93,6 +93,14 @@ class ReportProductConsigment(models.TransientModel):
         ])
 
         for line in pos_order_lines:
+            
+            # pass return order
+            return_order = self.env['pos.order'].search([
+                ('pos_reference', '=', line.order_id.pos_reference)
+            ])
+            if len(return_order) > 1:
+                continue
+            
             name = line.order_id.name
             operations = self.env['stock.pack.operation'].search([
                 ('product_id.id', '=', line.product_id.id),

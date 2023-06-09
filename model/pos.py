@@ -39,6 +39,9 @@ class ProfitPoSReport(models.TransientModel):
                 ], order="date_order asc, id asc", limit =1)
                 is_return = True if transaction.id != order.id else False
 
+                if is_return and order.session_id.id != transaction.session_id.id:
+                    continue
+
                 total_hpp_product = 0
                 trans_data = []
                 trans_line = []

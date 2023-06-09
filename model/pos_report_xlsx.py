@@ -68,6 +68,9 @@ class ProfitPosReportXlsx(ReportXlsx):
                     ('pos_reference', '=', transaction.pos_reference)
                 ], order="date_order asc, id asc", limit =1)
                 is_return = True if transaction.id != order.id else False
+
+                if is_return and order.session_id.id != transaction.session_id.id:
+                    continue
                 
                 if type_report == 'detail':
                     session_ws.merge_range(row_session_ws, col_session_ws, row_session_ws, col_session_ws+6, transaction.name, format_cell_bold)

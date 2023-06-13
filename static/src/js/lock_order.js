@@ -15,12 +15,16 @@ odoo.define('auth_order_of_stock.lock_order', function (require) {
                         self.pos.gui.show_popup('password', {
                             'title': _t('Password ?'),
                             confirm: function (pw) {
+                                console.log('pw: ', pw)
                                 const string_pin = self.pos.config.string_pin_order
                                 const array_string_pin = string_pin.split('|')
                                 
                                 let access_accept = false
                                 array_string_pin.forEach(pin => {
-                                    if( pin.slice(2) == pw.toString() ) { access_accept = true }
+                                    if(pin.length > 0) {
+                                        console.log('pin: ', pin)
+                                        if( pin.slice(2) === pw.toString() ) { access_accept = true }
+                                    }
                                 })
                                 
                                 if ( !access_accept ) {

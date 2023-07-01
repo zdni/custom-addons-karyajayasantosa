@@ -90,9 +90,31 @@ class ReportProductConsigment(models.TransientModel):
             ('order_id.date_order', '<=', self.end_date),
             ('product_id.categ_id.id', 'in', array_cat_cons),
             ('product_id.brand_id.id', 'in', array_brand),
-        ])
+        ], order="order_id asc, product_id asc")
 
-        for line in pos_order_lines:
+        for index, line in enumerate(pos_order_lines):
+            discount = line.price_unit*line.qty - line.price_subtotal_incl
+            price_subtotal_incl = line.price_subtotal_incl
+            price_unit = line.price_unit
+
+            if index > 1:
+                prev_line = pos_order_lines[index-1]
+                if prev_line.product_id.id == line.product_id.id:
+                    continue
+            
+            if index < len(pos_order_lines)-1:
+                idx = 1
+                while True:
+                    next_line = pos_order_lines[index+idx]
+                    if next_line.product_id.id != line.product_id.id:
+                        break
+
+                    discount += ( next_line.price_unit*next_line.qty - next_line.price_subtotal_incl )
+                    price_subtotal_incl += next_line.price_subtotal_incl
+                    price_unit += next_line.price_unit
+                    idx += 1
+            
+            price_unit = price_unit/idx
             
             # pass return order
             return_order = self.env['pos.order'].search([
@@ -110,7 +132,7 @@ class ReportProductConsigment(models.TransientModel):
             for operation in operations:
                 picking = []
 
-                discount = (line.price_unit*operation.product_qty) - line.price_subtotal_incl
+                # discount = (line.price_unit*operation.product_qty) - price_subtotal_incl
                 promo_lines = self.env['pos.order.line'].search([
                     ('order_id.id', '=', line.order_id.id),
                     ('product_get_promo_id', '=', line.product_id.id),
@@ -125,9 +147,9 @@ class ReportProductConsigment(models.TransientModel):
                 picking.append( line.order_id.date_order )
                 picking.append( operation.product_id.name )
                 picking.append( operation.product_qty )
-                picking.append( line.price_unit )
+                picking.append( price_unit )
                 picking.append( discount )
-                picking.append( line.price_subtotal_incl + promo )
+                picking.append( price_subtotal_incl + promo )
 
                 brand = operation.product_id.brand_id.name
                 vendor = operation.owner_id.display_name

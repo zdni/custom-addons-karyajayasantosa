@@ -23,7 +23,7 @@ odoo.define('auth_order_of_stock.lock_order', function (require) {
                                 array_string_pin.forEach(pin => {
                                     if(pin.length > 0) {
                                         console.log('pin: ', pin)
-                                        if( pin.slice(2) === pw.toString() ) { access_accept = true }
+                                        if( pin.slice(3) === pw.toString() ) { access_accept = true }
                                     }
                                 })
                                 

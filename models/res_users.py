@@ -9,7 +9,6 @@ class ResUser(models.Model):
     @api.multi
     def write(self, vals):
         for record in self:
-            super(ResUser, record).write(vals)
             old_pin = '|' + str( record.id ) + ':|'
             if record.pos_security_pin:
                 old_pin = '|' + str( record.id ) + ':' + record.pos_security_pin + '|'
@@ -34,3 +33,5 @@ class ResUser(models.Model):
                 pos_config.write({
                     'string_pin_order': replace_pin,
                 })
+                
+        return super(ResUser, self).write(vals)

@@ -15,14 +15,12 @@ odoo.define('auth_order_of_stock.lock_order', function (require) {
                         self.pos.gui.show_popup('password', {
                             'title': _t('Password ?'),
                             confirm: function (pw) {
-                                console.log('pw: ', pw)
                                 const string_pin = self.pos.config.string_pin_order
                                 const array_string_pin = string_pin.split('|')
                                 
                                 let access_accept = false
                                 array_string_pin.forEach(pin => {
                                     if(pin.length > 0) {
-                                        console.log('pin: ', pin)
                                         if( pin.slice(3) === pw.toString() ) { access_accept = true }
                                     }
                                 })
@@ -49,4 +47,47 @@ odoo.define('auth_order_of_stock.lock_order', function (require) {
         },
     })
 
+    var _super_order_line = models.Orderline.prototype;
+    models.Orderline = models.Orderline.extend({
+        set_quantity: function (quantity) {
+            const self = this
+            if (this.pos.the_first_load == false && quantity != 'remove' && this.product['qty_available'] < quantity && this.pos.config['allow_order_out_of_stock'] == true) {
+                // if( !['consu','service'].includes( this.product['type'] ) ) {
+                if( this.product['type'] != 'consu' && this.product['type'] != 'service' ) {
+                    if(self.pos.config.lock_order == true) {
+                        self.pos.gui.show_popup('password', {
+                            'title': _t('Password ?'),
+                            confirm: function (pw) {
+                                const string_pin = self.pos.config.string_pin_order
+                                const array_string_pin = string_pin.split('|')
+                                
+                                let access_accept = false
+                                array_string_pin.forEach(pin => {
+                                    if(pin.length > 0) {
+                                        console.log('pin: ', pin)
+                                        if( pin.slice(3) === pw.toString() ) { access_accept = true }
+                                    }
+                                })
+                                
+                                if ( !access_accept ) {
+                                    return self.pos.gui.show_popup('error', {
+                                        'title': _t('Error'),
+                                        'body': _t('Incorrect password. Please try again'),
+                                    })
+                                } else {
+                                    return _super_order_line.set_quantity.call(self, quantity);
+                                }
+                            },
+                        })
+                    } else {
+                        return _super_order_line.set_quantity.call(self, quantity);
+                    }
+                } else {
+                    return _super_order_line.set_quantity.call(self, quantity);
+                }
+            } else {
+                return _super_order_line.set_quantity.call(self, quantity);
+            }
+        }
+    });
 })

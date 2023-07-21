@@ -98,12 +98,12 @@ odoo.define('auth_order_of_stock.lock_order', function (require) {
                                 })
                                 
                                 if ( !access_accept ) {
-                                    self.order.set_pass_check_allow_order_out_of_stock(true)
                                     return self.pos.gui.show_popup('error', {
                                         'title': _t('Error'),
                                         'body': _t('Incorrect password. Please try again'),
                                     })
                                 } else {
+                                    self.order.set_pass_check_allow_order_out_of_stock(true)
                                     return _super_order_line.set_quantity.call(self, quantity)
                                 }
                             },

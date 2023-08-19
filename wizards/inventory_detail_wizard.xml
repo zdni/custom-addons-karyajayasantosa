@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="inventory_detail_wizard_form" model="ir.ui.view">
+            <field name="name">inventory.detail.wizard.form.view</field>
+            <field name="model">inventory.detail.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Laporan Detail Inventory">
+                    <group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                        <group>
+                            <field name="location_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" domain="[('usage', '=', 'internal')]"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="type"/>
+                        <field name="product_ids" attrs="{'invisible': [('type', '=', 'category')]}" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" />
+                        <field name="category_ids" attrs="{'invisible': [('type', '=', 'product')]}" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" />
+                    </group>
+
+                    <footer>
+                        <button name="print_report" string="Print Report" class="oe_highlight" type="object"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_inventory_detail_wizard" model="ir.actions.act_window">
+            <field name="name">Laporan Detail Inventory</field>
+            <field name="res_model">inventory.detail.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_inventory_detail_wizard"
+            name="Laporan Detail Inventory"
+            action="action_inventory_detail_wizard"
+            parent="stock.menu_warehouse_report"
+            sequence="10"
+        />
+
+    </data>
+</odoo>
+

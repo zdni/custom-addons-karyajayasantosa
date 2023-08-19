@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_inventory_detail">
+        <t t-call="report.external_layout">
+            <div class="page">
+                <div class="oe_structure">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <center>
+                            <b>
+                                <h3>Laporan Detail Inventory</h3>
+                            </b>
+                        </center>
+                        <center>
+                            <b>
+                                Tanggal Penarikan: <br/> <span t-esc="date"/>
+                            </b>
+                        </center>
+                    </div>
+                    <br/>
+                    <t t-foreach="data.keys()" t-as="location">
+                        <t t-if="data[location]">
+                            <t t-set="total_inventory" t-value="0"/>
+                            
+                            <h4><span t-esc="location"/></h4>
+                            <table class="table table-bordered table-condensed table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Produk</th>
+                                        <th>UoM</th>
+                                        <th>Qty</th>
+                                        <th>Nilai</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="number" t-value="1"/>
+                                    <t t-foreach="data[location]" t-as="line">
+                                        <tr>
+                                            <td>
+                                                <span t-esc="number"/>
+                                                <t t-set="number" t-value="number + 1"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line['product']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line['uom']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="line['qty']"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,}'.format(line['amount'])"/>
+                                                <t t-set="total_inventory" t-value="total_inventory + line['amount']"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            <div class="row" style="margin-bottom: 10px;">
+                                <div class="col-xs-4 pull-right">
+                                    <table class="table table-condensed">
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td class="text-right">
+                                                <span t-esc="'{:,}'.format(total_inventory)"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <br/>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

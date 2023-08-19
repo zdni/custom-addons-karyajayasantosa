@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <report 
+            id="action_report_inv_adj_xlsx"
+            model="stock.inventory" 
+            string="Inventory Adjustment XLSX"
+            report_type="xlsx"
+            name="report_inv_adj_xlsx" 
+            file="report_inv_adj_xlsx" 
+            attachment_use="False"
+            menu="False"
+        />
+
+        <report
+            id="action_report_inventory_detail"
+            string="Report Inventory Detail"
+            model="inventory.detail.wizard"
+            report_type="qweb-pdf"
+            file="report_inventory.report_inventory_detail"
+            name="report_inventory.report_inventory_detail"
+        />
+    
+    </data>
+
+</odoo>

@@ -16,21 +16,6 @@ class ReportInventoryAdjustmentXlsx(ReportXlsx):
     def generate_xlsx_report(self, workbook, data, objects):
         form = data['form']
 
-        # if len(form['location_ids']) == 0:
-        #     locations = self.env['stock.location'].search([ ('usage', '=', 'internal') ])
-        # else:
-        #     locations = self.env['stock.location'].search([ ('id', 'in', form['location_ids']) ])
-        
-        # if len(form['product_ids']) == 0 and form['type'] == 'product':
-        #     products = self.env['product.product'].search([ ('type', '=', 'product') ])
-        # else:
-        #     products = self.env['product.product'].search([ ('id', 'in', form['product_ids']) ])
-
-        # if len(form['category_ids']) == 0 and form['type'] == 'category': 
-        #     categories = self.env['product.category'].search([])
-        # else:
-        #     categories = self.env['product.category'].search([ ('id', 'in', form['category_ids']) ])
-
         condition_loc = [ ('usage', '=', 'internal') ] if len(form['location_ids']) == 0 else [ ('id', 'in', form['location_ids']) ]
         locations = self.env['stock.location'].search(condition_loc)
         
@@ -59,11 +44,12 @@ class ReportInventoryAdjustmentXlsx(ReportXlsx):
             if location.name != 'Stock': continue
             loc_name = location.location_id.name + '/' + location.name
             worksheet.write(row, col+2+index, loc_name, format_table_header)
-            index += 1
+            worksheet.write(row, col+2+index+1, 'Inv. Val.', format_table_header)
+            index += 2
 
         row += 1
         if form['type'] == 'product':
-            condition_prod = [ ('type', '=', 'product') ] if len(form['product_ids']) == 0 else [ ('id', 'in', form['product_ids']) ]
+            condition_prod = [ ('type', '=', 'product'), ('active', '=', True) ] if len(form['product_ids']) == 0 else [ ('id', 'in', form['product_ids']), ('active', '=', True) ]
             products = self.env['product.product'].search(condition_prod)
             for product in products:
                 worksheet.write(row, col, product.display_name, format_table_cell)
@@ -72,23 +58,26 @@ class ReportInventoryAdjustmentXlsx(ReportXlsx):
                 for location in locations:
                     if location.name != 'Stock': continue
                     
-                    qty = 0
+                    qty = amount = 0
                     sq = self.env['stock.quant'].search([
                         ('product_id.id', '=', product.id),
                         ('location_id.id', '=', location.id),
                         ('in_date', '<=', end_date_str),
                     ])
-                    for line in sq: qty += line.qty
+                    for line in sq: 
+                        qty += line.qty
+                        amount += line.inventory_value
 
                     worksheet.write(row, col+2+index, qty, format_table_cell)
-                    index += 1
+                    worksheet.write(row, col+2+index+1, amount, format_table_cell)
+                    index += 2
                 row += 1
         
         if form['type'] == 'category':
             condition_cat = [] if len(form['category_ids']) == 0 else [ ('id', 'in', form['category_ids']) ]
             categories = self.env['product.category'].search(condition_cat)
             for category in categories:
-                products = self.env['product.product'].search([ ('categ_id.id', '=', category.id) ])
+                products = self.env['product.product'].search([ ('categ_id.id', '=', category.id), ('active', '=', True) ])
                 for product in products:
                     worksheet.write(row, col, product.display_name, format_table_cell)
                     worksheet.write(row, col+1, product.uom_id.name, format_table_cell)
@@ -96,16 +85,19 @@ class ReportInventoryAdjustmentXlsx(ReportXlsx):
                     for location in locations:
                         if location.name != 'Stock': continue
 
-                        qty = 0
+                        qty = amount = 0
                         sq = self.env['stock.quant'].search([
                             ('product_id.id', '=', product.id),
                             ('location_id.id', '=', location.id),
                             ('in_date', '<=', end_date_str),
                         ])
-                        for line in sq: qty += line.qty
+                        for line in sq: 
+                            qty += line.qty
+                            amount += line.inventory_value
 
                         worksheet.write(row, col+2+index, qty, format_table_cell)
-                        index += 1
+                        worksheet.write(row, col+2+index+1, amount, format_table_cell)
+                        index += 2
                     row += 1
         
 ReportInventoryAdjustmentXlsx('report.report_inventory_detail_xlsx', 'inventory.detail.wizard')

@@ -1,2 +1,3 @@
 import inv_adj
+import inventory_detail_xlsx
 import stock_inventory

@@ -13,6 +13,17 @@
             attachment_use="False"
             menu="False"
         />
+    
+        <report 
+            id="action_report_inventory_detail_xlsx"
+            model="inventory.detail.wizard" 
+            string="Report Inventory Detail XLSX"
+            report_type="xlsx"
+            name="report_inventory_detail_xlsx" 
+            file="report_inventory_detail_xlsx" 
+            attachment_use="False"
+            menu="False"
+        />
 
         <report
             id="action_report_inventory_detail"

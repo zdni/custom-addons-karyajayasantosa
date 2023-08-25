@@ -23,6 +23,7 @@
 
                     <footer>
                         <button name="print_report" string="Print Report" class="oe_highlight" type="object"/>
+                        <button name="print_report_xlsx" string="Print Excel" type="object"/>
                         <button string="Cancel" class="btn-default" special="cancel"/>
                     </footer>
                 </form>

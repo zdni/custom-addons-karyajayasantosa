@@ -33,6 +33,8 @@ class InventoryDetailWizard(models.TransientModel):
             self.category_ids = self.env['product.category'].search([])
 
         for location in self.location_ids:
+            if location.name != 'Stock': continue
+
             loc_name = location.location_id.name + '/' + location.name
             if not (loc_name in groupby_dict):
                 groupby_dict[loc_name] = []
@@ -74,8 +76,8 @@ class InventoryDetailWizard(models.TransientModel):
                         data = {
                             'product': product.name,
                             'uom': product.uom_id.name,
-                            'qty': 0,
-                            'amount': 0,
+                            'qty': qty,
+                            'amount': amount,
                         }
                         groupby_dict[loc_name].append(data)
 
@@ -86,3 +88,16 @@ class InventoryDetailWizard(models.TransientModel):
             'date': str( self.end_date ),
         }
         return self.env['report'].get_action(self, 'report_inventory.report_inventory_detail', data=datas)
+    
+    @api.multi
+    def print_report_xlsx(self):
+        context = self._context
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'inventory.detail.wizard'
+        datas['form'] = self.read()[0]
+        
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'report_inventory_detail_xlsx',
+            'datas': datas,
+        }

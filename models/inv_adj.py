@@ -1,4 +1,5 @@
 from odoo import fields, _
+from datetime import datetime, timedelta
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -13,6 +14,7 @@ except ImportError:
 class ReportInventoryAdjustmentXlsx(ReportXlsx):
 
     def generate_xlsx_report(self, workbook, data, objects):
+        now = datetime.now() + timedelta(hours=8)
         res_filter = {
             'none':  _('All products'),
             'category':  _('One product category'),
@@ -50,25 +52,31 @@ class ReportInventoryAdjustmentXlsx(ReportXlsx):
         row += 3
         
         # information
-        worksheet.write(row, col, "Lokasi", format_table_cell_bold)
+        worksheet.write(row, col, "Approve", format_table_cell_bold)
         worksheet.write(row, col+1, ":", format_table_cell)
-        worksheet.write(row, col+2, (document.location_id.location_id.name or '') + ('/' + document.location_id.name), format_table_cell)
-        worksheet.write(row+1, col, "Tipe", format_table_cell_bold)
+        worksheet.write(row, col+2, document.approval_desc, format_table_cell)
+        worksheet.write(row+1, col, "Lokasi", format_table_cell_bold)
         worksheet.write(row+1, col+1, ":", format_table_cell)
-        worksheet.write(row+1, col+2, res_filter[document.filter], format_table_cell)
-        worksheet.write(row+2, col, "Terakhir Diperbarui", format_table_cell_bold)
+        worksheet.write(row+1, col+2, (document.location_id.location_id.name or '') + ('/' + document.location_id.name), format_table_cell)
+        worksheet.write(row+2, col, "Tipe", format_table_cell_bold)
         worksheet.write(row+2, col+1, ":", format_table_cell)
-        worksheet.write(row+2, col+2, document.write_uid.name, format_table_cell)
+        worksheet.write(row+2, col+2, res_filter[document.filter], format_table_cell)
+        worksheet.write(row+3, col, "Terakhir Diperbarui", format_table_cell_bold)
+        worksheet.write(row+3, col+1, ":", format_table_cell)
+        worksheet.write(row+3, col+2, document.write_uid.name, format_table_cell)
 
-        worksheet.write(row, col+4, "Tanggal", format_table_cell_bold)
+        worksheet.write(row, col+4, "Tanggal Cetak", format_table_cell_bold)
         worksheet.write(row, col+5, ":", format_table_cell)
-        worksheet.write(row, col+6, document.date, format_table_cell)
-        worksheet.write(row+1, col+4, "Tanggal Akuntansi", format_table_cell_bold)
+        worksheet.write(row, col+6, now.strftime('%d-%m-%Y %H:%M:%S'), format_table_cell)
+        worksheet.write(row+1, col+4, "Tanggal", format_table_cell_bold)
         worksheet.write(row+1, col+5, ":", format_table_cell)
-        worksheet.write(row+1, col+6, document.accounting_date, format_table_cell)
-        worksheet.write(row+2, col+4, "Status", format_table_cell_bold)
+        worksheet.write(row+1, col+6, document.date, format_table_cell)
+        worksheet.write(row+2, col+4, "Tanggal Akuntansi", format_table_cell_bold)
         worksheet.write(row+2, col+5, ":", format_table_cell)
-        worksheet.write(row+2, col+6, res_state[document.state], format_table_cell)
+        worksheet.write(row+2, col+6, document.accounting_date, format_table_cell)
+        worksheet.write(row+3, col+4, "Status", format_table_cell_bold)
+        worksheet.write(row+3, col+5, ":", format_table_cell)
+        worksheet.write(row+3, col+6, res_state[document.state], format_table_cell)
 
         row += 6
 

@@ -13,8 +13,6 @@ class StockInventory(models.Model):
         datas['model'] = 'stock.inventory'
         datas['form'] = self.read()[0]
         
-        _logger.warning(datas)
-        
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'report_inv_adj_xlsx',

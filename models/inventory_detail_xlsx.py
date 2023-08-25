@@ -37,23 +37,28 @@ class ReportInventoryAdjustmentXlsx(ReportXlsx):
         worksheet.merge_range(row, col, row, col+1+len(locations), 'Tanggal Penarikan ' + str(form['end_date']), format_cell_bold_center)
         row += 3
         
-        worksheet.write(row, col, "Produk", format_table_header)
-        worksheet.write(row, col+1, "UoM", format_table_header)
+        worksheet.merge_range(row, col, row+1, col, "Barcode", format_table_header)
+        worksheet.merge_range(row, col+1, row+1, col+1, "Nama Produk", format_table_header)
+        worksheet.merge_range(row, col+2, row+1, col+2, "Brand", format_table_header)
+        worksheet.merge_range(row, col+3, row+1, col+3, "UoM", format_table_header)
         index = 0
         for location in locations:
             if location.name != 'Stock': continue
             loc_name = location.location_id.name + '/' + location.name
-            worksheet.write(row, col+2+index, loc_name, format_table_header)
-            worksheet.write(row, col+2+index+1, 'Inv. Val.', format_table_header)
+            worksheet.merge_range(row, col+4+index, row, col+5+index, loc_name, format_table_header)
+            worksheet.write(row+1, col+4+index, 'Qty', format_table_header)
+            worksheet.write(row+1, col+5+index, 'Inv. Val.', format_table_header)
             index += 2
 
-        row += 1
+        row += 2
         if form['type'] == 'product':
             condition_prod = [ ('type', '=', 'product'), ('active', '=', True) ] if len(form['product_ids']) == 0 else [ ('id', 'in', form['product_ids']), ('active', '=', True) ]
             products = self.env['product.product'].search(condition_prod)
             for product in products:
-                worksheet.write(row, col, product.display_name, format_table_cell)
-                worksheet.write(row, col+1, product.uom_id.name, format_table_cell)
+                worksheet.write(row, col, product.barcode, format_table_cell)
+                worksheet.write(row, col+1, product.name, format_table_cell)
+                worksheet.write(row, col+2, product.brand_id.name, format_table_cell)
+                worksheet.write(row, col+3, product.uom_id.name, format_table_cell)
                 index = 0
                 for location in locations:
                     if location.name != 'Stock': continue
@@ -68,8 +73,8 @@ class ReportInventoryAdjustmentXlsx(ReportXlsx):
                         qty += line.qty
                         amount += line.inventory_value
 
-                    worksheet.write(row, col+2+index, qty, format_table_cell)
-                    worksheet.write(row, col+2+index+1, amount, format_table_cell)
+                    worksheet.write(row, col+4+index, qty, format_table_cell)
+                    worksheet.write(row, col+5+index, amount, format_table_cell)
                     index += 2
                 row += 1
         
@@ -79,8 +84,10 @@ class ReportInventoryAdjustmentXlsx(ReportXlsx):
             for category in categories:
                 products = self.env['product.product'].search([ ('categ_id.id', '=', category.id), ('active', '=', True) ])
                 for product in products:
-                    worksheet.write(row, col, product.display_name, format_table_cell)
-                    worksheet.write(row, col+1, product.uom_id.name, format_table_cell)
+                    worksheet.write(row, col, product.barcode, format_table_cell)
+                    worksheet.write(row, col+1, product.name, format_table_cell)
+                    worksheet.write(row, col+2, product.brand_id.name, format_table_cell)
+                    worksheet.write(row, col+3, product.uom_id.name, format_table_cell)
                     index = 0
                     for location in locations:
                         if location.name != 'Stock': continue
@@ -95,8 +102,8 @@ class ReportInventoryAdjustmentXlsx(ReportXlsx):
                             qty += line.qty
                             amount += line.inventory_value
 
-                        worksheet.write(row, col+2+index, qty, format_table_cell)
-                        worksheet.write(row, col+2+index+1, amount, format_table_cell)
+                        worksheet.write(row, col+4+index, qty, format_table_cell)
+                        worksheet.write(row, col+5+index, amount, format_table_cell)
                         index += 2
                     row += 1
         

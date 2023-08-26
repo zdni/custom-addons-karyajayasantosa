@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sale_location_wizard_form" model="ir.ui.view">
+            <field name="name">sale.location.wizard.form.view</field>
+            <field name="model">sale.location.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Laporan Penjualan per Lokasi">
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="location_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" domain="[('usage', '=', 'internal')]"/>
+                        </group>
+                        <group>
+                            <field name="type"/>
+                            <field name="product_ids" attrs="{'invisible': [('type', '=', 'category')]}" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" />
+                            <field name="category_ids" attrs="{'invisible': [('type', '=', 'product')]}" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}" />
+                        </group>
+                    </group>
+
+                    <footer>
+                        <button name="print_report_xlsx" string="Print Excel" type="object"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_sale_location_wizard" model="ir.actions.act_window">
+            <field name="name">Laporan Penjualan per Lokasi</field>
+            <field name="res_model">sale.location.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_sale_location_wizard"
+            name="Laporan Penjualan per Lokasi"
+            action="action_sale_location_wizard"
+            parent="sales_team.menu_sale_report"
+            sequence="10"
+        />
+
+    </data>
+</odoo>
+

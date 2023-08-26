@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <report 
+            id="action_report_sale_location_xlsx"
+            model="sale.location.wizard" 
+            string="Sale by Location XLSX"
+            report_type="xlsx"
+            name="report_sale_location_xlsx" 
+            file="report_sale_location_xlsx" 
+            attachment_use="False"
+            menu="False"
+        />
+    
+    </data>
+
+</odoo>

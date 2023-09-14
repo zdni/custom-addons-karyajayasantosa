@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <report
+            id="action_forecast_collection_report_xlsx"
+            model="forecast.collection.report"
+            string="Laporan Perkiraan Tagihan XLSX"
+            report_type="xlsx"
+            name="forecast_collection_report_xlsx"
+            file="forecast_collection_report_xlsx"
+        />
+    
+    </data>
+</odoo>

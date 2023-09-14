@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="wizard_report_forecast_collection" model="ir.ui.view">
+            <field name="name">forecast.collection.report.form.view</field>
+            <field name="model">forecast.collection.report</field>
+            <field name="arch" type="xml">
+                <form string="Laporan Perkiraan Tagihan">
+                    <group>
+                        <group>
+                            <field name="start_date"/>
+                        </group>
+                        <group>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="city_ids" widget="many2many_tags"/>
+                    </group>
+
+                    <footer>
+                        <button name="generate_excel" string="Excel" class="oe_highlight" type="object"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+
+
+            </field>
+        </record>
+
+        <record id="action_report_forecast_collection" model="ir.actions.act_window">
+            <field name="name">Laporan Perkiraan Tagihan</field>
+            <field name="res_model">forecast.collection.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_wizard_report_forecast_collection"
+            name="Laporan Perkiraan Tagihan"
+            action="action_report_forecast_collection"
+            parent="account.menu_finance_legal_statement"
+            sequence="2"/>
+    </data>
+</odoo>
+

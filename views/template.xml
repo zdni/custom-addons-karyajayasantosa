@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="pos_hs_code_assets" name="pos_hs_code assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_hs_code/static/src/js/db.js"/>
+            <script type="text/javascript" src="/pos_hs_code/static/src/js/models.js"/>
+            <script type="text/javascript" src="/pos_hs_code/static/src/js/screens.js"/>
+            
+        </xpath>
+    </template>
+
+</odoo>

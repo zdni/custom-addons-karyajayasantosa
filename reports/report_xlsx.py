@@ -47,11 +47,12 @@ class ForecastCollectionReportXlsx(ReportXlsx):
                 customer_invoices = []
                 for invoice in invoices:
                     if invoice.payment_term_id:
-                        invoice_date = datetime.strptime(invoice.date_invoice, '%Y-%m-%d').date()
-                        invoice_age = today - invoice_date
+                        date_invoice = datetime.strptime(invoice.date_invoice, '%Y-%m-%d').date()
+                        date_due = datetime.strptime(invoice.date_due, '%Y-%m-%d').date()
+                        invoice_age = today - date_invoice
                         term_date = invoice.payment_term_id.line_ids[0].days or 0
                         
-                        if term_date <= (invoice_age.days+1):
+                        if term_date <= ((date_due-date_invoice).days+1):
                             bg_number = '-'
                             giros = self.env['vit.giro'].search([ ('giro_invoice_ids.invoice_id', '=', invoice.id) ])
                             if giros:

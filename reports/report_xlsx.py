@@ -1,7 +1,4 @@
-from odoo import fields
 from datetime import datetime, date, timedelta
-from odoo.exceptions import except_orm
-from dateutil.relativedelta import relativedelta
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -16,7 +13,6 @@ except ImportError:
 class ForecastCollectionReportXlsx(ReportXlsx):
 
     def generate_xlsx_report(self, workbook, data, objects):
-        date_start = data['form']['start_date']
         date_end = data['form']['end_date']
         city_ids = data['form']['city_ids']
         today = date.today()
@@ -37,43 +33,40 @@ class ForecastCollectionReportXlsx(ReportXlsx):
             customers = self.env['res.partner'].search([('kota_id.id', '=', city.id)])
             customer_data = []
             for customer in customers:
+                customer_invoices = []
                 invoices = self.env['account.invoice'].search([
                     ('partner_id', '=', customer.id),
                     ('state', 'in', ['open']),
                     ('type', '=', 'out_invoice'),
-                    ('date_due', '>=', date_start),
                     ('date_due', '<=', date_end),
                 ], order='date_invoice asc')
-                customer_invoices = []
                 for invoice in invoices:
-                    if invoice.payment_term_id:
-                        date_invoice = datetime.strptime(invoice.date_invoice, '%Y-%m-%d').date()
-                        date_due = datetime.strptime(invoice.date_due, '%Y-%m-%d').date()
-                        invoice_age = today - date_invoice
-                        term_date = invoice.payment_term_id.line_ids[0].days or 0
-                        
-                        if term_date <= ((date_due-date_invoice).days+1):
-                            bg_number = '-'
-                            giros = self.env['vit.giro'].search([ ('giro_invoice_ids.invoice_id', '=', invoice.id) ])
-                            if giros:
-                                for giro in giros:
-                                    bg_number = bg_number + ' ' + giro.name
+                    date_invoice = datetime.strptime(invoice.date_invoice, '%Y-%m-%d').date()
+                    due_date = date_invoice + timedelta(days=(customer.due_date_customer-1))
+                    invoice_age = today - date_invoice
+                    
+                    if due_date <= datetime.strptime(date_end, '%Y-%m-%d').date():
+                        bg_number = '-'
+                        giros = self.env['vit.giro'].search([ ('giro_invoice_ids.invoice_id', '=', invoice.id) ])
+                        if giros:
+                            for giro in giros:
+                                bg_number = bg_number + ' ' + giro.name
 
-                            data = {
-                                'invoice': invoice.number,
-                                'payment_term': invoice.payment_term_id.name,
-                                'invoice_age': str(invoice_age.days+1) + ' Hari',
-                                'customer': customer.display_name,
-                                'credit_limit': customer.credit_limit,
-                                'date_invoice': datetime.strptime(invoice.date_invoice, '%Y-%m-%d').strftime('%Y-%m-%d'),
-                                'sales': invoice.user_id.name,
-                                'date_due': datetime.strptime(invoice.date_due, '%Y-%m-%d').strftime('%Y-%m-%d'),
-                                'giro': bg_number,
-                                'amount_total': invoice.amount_total,
-                                'residual': invoice.residual
-                            }
+                        data = {
+                            'invoice': invoice.number,
+                            'payment_term': str(customer.due_date_customer) + ' Hari',
+                            'invoice_age': str(invoice_age.days+1) + ' Hari',
+                            'customer': customer.display_name,
+                            'credit_limit': customer.credit_limit,
+                            'date_invoice': datetime.strptime(invoice.date_invoice, '%Y-%m-%d').strftime('%d/%m/%Y'),
+                            'sales': invoice.user_id.name,
+                            'date_due': due_date.strftime('%d/%m/%Y'),
+                            'giro': bg_number,
+                            'amount_total': invoice.amount_total,
+                            'residual': invoice.residual
+                        }
 
-                            customer_invoices.append(data)
+                        customer_invoices.append(data)
                 if len(customer_invoices) > 0: customer_data.append(customer_invoices)
         
             if len(customer_data) > 0: datas[city.name] = customer_data
@@ -82,9 +75,11 @@ class ForecastCollectionReportXlsx(ReportXlsx):
         worksheet.merge_range(row, col, row + 1, col+10, "LAPORAN PERKIRAAN TAGIHAN", format_table_header)
         
         row += 2
-        date_string = date_start + ' sampai ' + date_end
+        date_string = 'Sampai Tanggal ' + datetime.strptime(date_end, "%Y-%m-%d").strftime("%d %B %Y")
         worksheet.merge_range(row, col, row, col+10, date_string, format_table_header)
-        row += 3
+        row += 1
+        worksheet.merge_range(row, col, row, col+10, ("*Catatan : Umur Piutang Per Tanggal " + datetime.now().strftime("%d %B %Y")), format_table_header)
+        row += 2
 
         for city in datas.keys():
             row += 1

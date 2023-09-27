@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 class ForecastCollectionReportWizard(models.TransientModel):
     _name = "forecast.collection.report"
 
-    start_date = fields.Date(string='Tanggal Awal', required=True)
+    # start_date = fields.Date(string='Tanggal Awal', required=True)
     end_date = fields.Date(string='Tanggal Akhir', required=True)
     city_ids = fields.Many2many("vit.kota", string='Kota')
 

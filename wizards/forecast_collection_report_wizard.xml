@@ -7,9 +7,9 @@
             <field name="arch" type="xml">
                 <form string="Laporan Perkiraan Tagihan">
                     <group>
-                        <group>
+                        <!-- <group>
                             <field name="start_date"/>
-                        </group>
+                        </group> -->
                         <group>
                             <field name="end_date"/>
                         </group>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record model="ir.ui.view" id="ace_view_pos_config_form">
+            <field name="name">pos.config.form.view.inherit</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <group string="Deposit Customer">
+                        <field name="enable_pos_deposit"/>
+                        <field name="deposit_product_id" 
+                            attrs="{'invisible': [('enable_pos_deposit', '=', False)], 'required': [('enable_pos_deposit', '=', True)]}"
+                            options="{'no_create':True}"/>
+                        <field name="deposit_journal_id" 
+                            attrs="{'invisible': [('enable_pos_deposit', '=', False)], 'required': [('enable_pos_deposit', '=', True)]}"
+                            options="{'no_create':True}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

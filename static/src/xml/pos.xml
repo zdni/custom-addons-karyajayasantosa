@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve" >
+
+    <t t-extend="PaymentScreenWidget">
+		<t t-jquery="div.payment-buttons" t-operation="append">
+			<div class='button js_redeem_deposit_customer'>
+                <i class='fa fa-gift' /> 
+                <span>
+                	Deposit
+                </span>
+            </div>
+		</t>
+	</t>
+
+    <t t-name="RedeemDepositCustomerPopup">
+         <div class="modal-dialog">
+            <div class="popup popup-deposit-customer">
+            	<p class="title">Deposit Customer</p>
+            	<t t-if="widget.pos.get_order().get_client()">
+            		<div class="deposit_info">
+		            	<table>
+							<colgroup>
+								<col width="50%" />
+							</colgroup>
+		            		<tr>
+		            			<td>Deposit Anda: </td>
+		            			<td><t t-esc="widget.pos.get_order().get_client().total_deposit.toFixed(2)" /></td>
+		            		</tr>
+		            		<tr>
+		            			<td>Redeem Deposit: </td>
+		            			<td><input type="text" class="redeem_deposit"/></td>
+		            		</tr>
+		            	</table>
+						<br/>
+	            	</div>
+            	</t>
+            	<div class="footer">
+            		<div class="button confirm">
+                        Redeem
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </div>
+            </div>
+            
+    	 </div>
+    </t>
+
+	<t t-name="PaymentScreen-Paymentmethods">
+        <div class='paymentmethods'>
+            <t t-foreach="widget.pos.cashregisters" t-as="cashregister">
+				<t t-if="cashregister.journal_id[0] != widget.pos.config.deposit_journal_id[0]">
+					<div class="button paymentmethod" t-att-data-id="cashregister.journal_id[0]">
+                    	<t t-esc="cashregister.journal_id[1]" />
+					</div>
+				</t>
+            </t>
+        </div>
+    </t>
+
+	<t t-extend="ClientDetails">
+        <t t-jquery="div.client-details-right" t-operation="append">
+			<div class='client-detail'>
+				<span class='label'>Total Deposit</span>
+				<t t-if='partner.total_deposit'>
+					<span class='detail client-deposit'><t t-esc='partner.total_deposit'/></span>
+				</t>
+			</div>
+        </t>
+    </t>
+
+	<t t-extend="PosTicket">
+		<t t-jquery="div[class='receipt-user']" t-operation="after">
+			<t t-if="order.get_client()">
+				Pelanggan: <t t-esc="order.get_client().name"/>
+			</t>
+		</t>
+		<t t-jquery="[t-if='receipt.footer']" t-operation="before">
+		    <t t-if="widget.pos.config.enable_pos_deposit and order.get_client()">
+		        <div class="pos-center-align">Deposit Customer</div>
+			    <table>
+			        <t t-if="order.get_client()">
+						<t t-if="order.get_client().total_deposit">
+							<tr>
+								<td>Your Deposit</td>
+								<td class="pos-right-align">
+									<t t-esc="order.get_deposit_customer_format()"/>
+								</td>
+							</tr>
+						</t>
+						<t t-if="order.get_deposit_redeemed_amount()">
+							<tr>
+								<td>Redeemed Deposit:</td>
+								<td class="pos-right-align">
+									<t t-esc="order.get_deposit_redeemed_amount_format()"/>
+								</td>
+							</tr>
+						</t>
+						<t t-if="order.get_total_deposit()">
+							<tr class="emph">
+								<td>Total Deposit:</td>
+								<td class="pos-right-align">
+									<t t-esc="order.get_total_deposit_format()"/>
+								</td>
+							</tr>
+						</t>
+					</t>
+	            </table>
+	            <div class="pos-center-align">--------------------------------</div>
+            </t>
+		</t>
+	</t>
+
+	<t t-extend="XmlReceipt">
+		<t t-jquery=".before-footer" t-operation="before">
+		    <t t-if="widget.pos.config.enable_pos_deposit">
+			    <div>--------------------------------</div>
+			    <div>Deposit Customer</div>
+				<t t-if="receipt.client_points">
+					<line>
+		                <left><pre>Deposit Anda</pre></left>
+		                <right><value><t t-esc='receipt.client_points' /></value></right>
+		            </line>
+				</t>
+	            <t t-if="receipt.redeem_points">
+	                <line>
+	                    <left><pre>Penukaran Deposit</pre></left>
+	                    <right><value><t t-esc='receipt.redeem_points' /></value></right>
+	                </line>
+	            </t>
+	            <t t-if="receipt.total_points">
+	                <line>
+	                    <left><pre>Total Deposit</pre></left>
+	                    <right><value><t t-esc='receipt.total_points' /></value></right>
+	                </line>
+	            </t>
+	            <div>--------------------------------</div>
+            </t>
+		</t>
+		
+	</t>
+
+</templates>

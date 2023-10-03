@@ -1,0 +1,13 @@
+.deposit_info table{
+	width: 100%;
+	font-size: 15px
+}
+.deposit_info table tr td{
+	padding: 10px;
+}
+.deposit_info table tr td:first-child{
+	text-align: right;
+}
+.deposit_info table tr td:last-child{
+	text-align: left;
+}

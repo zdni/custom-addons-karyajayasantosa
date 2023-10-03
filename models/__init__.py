@@ -1,0 +1,5 @@
+import account_deposit
+import point_of_sale
+import res_company
+import res_partner
+import sale_config_settings

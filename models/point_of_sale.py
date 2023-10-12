@@ -1,5 +1,4 @@
 from odoo import fields, models, api
-from datetime import datetime, timedelta
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -45,5 +44,35 @@ class PosOrder(models.Model):
                     'credit': deposit_redeemed,
                 }
                 self.env['account.deposit.line'].create(data)
+
+        return res
+    
+# refund
+class PosMakePayment(models.TransientModel):
+    _inherit = 'pos.make.payment'
+
+    @api.multi
+    def check(self):
+        res = super(PosMakePayment, self).check()
+
+        self.ensure_one()
+        refund = self.env['pos.order'].browse(self.env.context.get('active_id', False))
+        data = self.read()[0]
+
+        # check refund
+        order = self.env['pos.order'].search([
+            ('pos_reference', '=', refund.pos_reference),
+        ])
+        if len(order) > 1:
+            if refund.session_id.config_id.enable_pos_deposit and refund.partner_id:
+                if data['journal_id'][0] == refund.session_id.config_id.deposit_journal_id.id:
+                    data = {
+                        'partner_id': refund.partner_id.id,
+                        'order_id': refund.id,
+                        'date': refund.date_order,
+                        'debit': data['amount']*-1 if data['amount'] < 0 else data['amount'],
+                        'credit': 0,
+                    }
+                    self.env['account.deposit.line'].create(data)
 
         return res

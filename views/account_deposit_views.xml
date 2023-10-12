@@ -7,11 +7,11 @@
             <field name="model">account.deposit.line</field>
             <field name="arch" type="xml">
                 <tree string="Deposit Customer">
-                    <field name="order_id" />
-                    <field name="partner_id" invisible="1" />
-                    <field name="date" />
-                    <field name="debit" />
-                    <field name="credit" />
+                    <field name="order_id" attrs="{'readonly': True}" />
+                    <field name="partner_id" attrs="{'readonly': True}" />
+                    <field name="date" attrs="{'readonly': True}" />
+                    <field name="debit" attrs="{'readonly': True}" />
+                    <field name="credit" attrs="{'readonly': True}" />
                 </tree>
             </field>
         </record>
@@ -24,13 +24,13 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="order_id" />
-                                <field name="partner_id" invisible="1" />
-                                <field name="date" />
+                                <field name="order_id" attrs="{'readonly': True}" />
+                                <field name="partner_id" attrs="{'readonly': True}" />
+                                <field name="date" attrs="{'readonly': True}" />
                             </group>
                             <group>
-                                <field name="debit" />
-                                <field name="credit" />
+                                <field name="debit" attrs="{'readonly': True}" />
+                                <field name="credit" attrs="{'readonly': True}" />
                             </group>
                         </group>
                     </sheet>
@@ -67,5 +67,12 @@
             <field name="act_window_id" ref="act_res_partner_2_deposit"/>
         </record>
     
+        <!-- <menuitem
+            id="account_deposit_line_menu"
+            name="Deposit Customer"
+            action="action_account_deposit_tree"
+            parent="point_of_sale.menu_point_of_sale"
+            sequence="10"/> -->
+            
     </data>
 </odoo>

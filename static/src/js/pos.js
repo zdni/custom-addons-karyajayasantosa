@@ -162,7 +162,7 @@ odoo.define('deposit_customer.pos', function (require) {
     		return str;
 		},
 		remove_paymentline: function(line){
-			if(line.cashregister.journal_id[0] === this.pos.config.deposit_journal_id[0]) {
+			if(this.pos.config.enable_pos_deposit && line.cashregister.journal_id[0] === this.pos.config.deposit_journal_id[0]) {
 				this.set_deposit_redeemed_amount(0);
 			}
     		_super_order.remove_paymentline.apply(this, arguments);
@@ -203,38 +203,40 @@ odoo.define('deposit_customer.pos', function (require) {
             const self = this;
             this._super();
 
-            this.$('.pay').click(function(){
-                const order = self.pos.get_order();
-                const orderlines = order.get_orderlines();
-                let deposit = 0;
-				let have_deposit = false;
-
-                for (let index = 0; index < orderlines.length; index++) {
-                    const orderline = orderlines[index];
-                    const product = orderline.product;
-                    
-					if( self.pos.config.deposit_product_id[0] === product.id ){
-						deposit += (orderline.price*orderline.quantity);
-						have_deposit = true;
+			if( self.pos.config.enable_pos_deposit ) {
+				this.$('.pay').click(function(){
+					const order = self.pos.get_order();
+					const orderlines = order.get_orderlines();
+					let deposit = 0;
+					let have_deposit = false;
+	
+					for (let index = 0; index < orderlines.length; index++) {
+						const orderline = orderlines[index];
+						const product = orderline.product;
+						
+						if( self.pos.config.deposit_product_id[0] === product.id ){
+							deposit += (orderline.price*orderline.quantity);
+							have_deposit = true;
+						}
 					}
-                }
-
-				if( !order.get_client() && deposit > 0 && have_deposit ) {
-					self.gui.back();
-                    return self.pos.gui.show_popup('error', {
-						title: '!!! Warning !!!',
-                        body: 'Silahkan Pilih Customer untuk deposit ini !!!'
-                    });
-				}
-				if( deposit < 0 && have_deposit && (Number(order.get_client().total_deposit) < deposit*-1) ) {
-					self.gui.back();
-                    return self.pos.gui.show_popup('error', {
-						title: '!!! Warning !!!',
-                        body: 'Pengeluaran Deposit lebih besar dari Deposit yang dimiliki Customer !!!'
-                    });
-				}
-				order.set_deposit_income_amount(deposit)
-            });
+	
+					if( !order.get_client() && deposit > 0 && have_deposit ) {
+						self.gui.back();
+						return self.pos.gui.show_popup('error', {
+							title: '!!! Warning !!!',
+							body: 'Silahkan Pilih Customer untuk deposit ini !!!'
+						});
+					}
+					if( deposit < 0 && have_deposit && (Number(order.get_client().total_deposit) < deposit*-1) ) {
+						self.gui.back();
+						return self.pos.gui.show_popup('error', {
+							title: '!!! Warning !!!',
+							body: 'Pengeluaran Deposit lebih besar dari Deposit yang dimiliki Customer !!!'
+						});
+					}
+					order.set_deposit_income_amount(deposit)
+				});
+			}
         },
 	})
 
@@ -250,29 +252,36 @@ odoo.define('deposit_customer.pos', function (require) {
 			
 			this.$('.js_redeem_deposit_customer').click(function() {
 				if( order ){
-					if( order.get_client() ){
-						// update partner
-						var fields = _.find(self.pos.models,function(model){ return model.model === 'res.partner'; }).fields;
-						new Model('res.partner').call('search_read', [[['id', '=', order.get_client().id]], fields], {}, {async: false})
-						.then(function(partner) {
-							if(partner.length > 0){
-								var exist_partner = self.pos.db.get_partner_by_id(order.get_client().id);
-								_.extend(exist_partner, partner[0]);
+					if( self.pos.config.enable_pos_deposit ) {
+						if( order.get_client() ){
+							// update partner
+							var fields = _.find(self.pos.models,function(model){ return model.model === 'res.partner'; }).fields;
+							new Model('res.partner').call('search_read', [[['id', '=', order.get_client().id]], fields], {}, {async: false})
+							.then(function(partner) {
+								if(partner.length > 0){
+									var exist_partner = self.pos.db.get_partner_by_id(order.get_client().id);
+									_.extend(exist_partner, partner[0]);
+								}
+							});
+	
+							if( order.get_client().total_deposit > 0 ){
+								self.show_popup_deposit_customer();
+							} else {
+								self.gui.show_popup('error', {
+									title: _t("Deposit Customer"),
+									body: _t(order.get_client().name + " tidak memiliki deposit customer"),
+								});
 							}
-						});
-
-                        if( order.get_client().total_deposit > 0 ){
-							self.show_popup_deposit_customer();
-                        } else {
-                            self.gui.show_popup('error', {
-                                title: _t("Deposit Customer"),
-                                body: _t(order.get_client().name + " tidak memiliki deposit customer"),
-                            });
-                        }
+						} else {
+							self.gui.show_popup('error', {
+								title: _t("Deposit Customer"),
+								body: _t("Silahkan pilih customer terlebih dahulu!"),
+							});
+						}
 					} else {
 						self.gui.show_popup('error', {
 							title: _t("Deposit Customer"),
-							body: _t("Silahkan pilih customer terlebih dahulu!"),
+							body: _t("Fitur Deposit Customer tidak aktif!"),
 						});
 					}
 				}

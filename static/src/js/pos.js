@@ -214,7 +214,7 @@ odoo.define('deposit_customer.pos', function (require) {
                     const product = orderline.product;
                     
 					if( self.pos.config.deposit_product_id[0] === product.id ){
-						deposit += orderline.price
+						deposit += (orderline.price*orderline.quantity);
 						have_deposit = true;
 					}
                 }
@@ -247,12 +247,22 @@ odoo.define('deposit_customer.pos', function (require) {
 			this._super();
 
 			var order = this.pos.get_order();
-
+			
 			this.$('.js_redeem_deposit_customer').click(function() {
 				if( order ){
 					if( order.get_client() ){
+						// update partner
+						var fields = _.find(self.pos.models,function(model){ return model.model === 'res.partner'; }).fields;
+						new Model('res.partner').call('search_read', [[['id', '=', order.get_client().id]], fields], {}, {async: false})
+						.then(function(partner) {
+							if(partner.length > 0){
+								var exist_partner = self.pos.db.get_partner_by_id(order.get_client().id);
+								_.extend(exist_partner, partner[0]);
+							}
+						});
+
                         if( order.get_client().total_deposit > 0 ){
-                            self.show_popup_deposit_customer();
+							self.show_popup_deposit_customer();
                         } else {
                             self.gui.show_popup('error', {
                                 title: _t("Deposit Customer"),

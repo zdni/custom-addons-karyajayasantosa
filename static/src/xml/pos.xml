@@ -24,7 +24,7 @@
 							</colgroup>
 		            		<tr>
 		            			<td>Deposit Anda: </td>
-		            			<td><t t-esc="widget.pos.get_order().get_client().total_deposit.toFixed(2)" /></td>
+		            			<td><t t-esc="widget.pos.get_order().get_deposit_customer_format()" /></td>
 		            		</tr>
 		            		<tr>
 		            			<td>Redeem Deposit: </td>
